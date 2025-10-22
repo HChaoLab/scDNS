@@ -1,6 +1,6 @@
 #' scContribution
 #'
-#' @param scDNSobjcet scDNSobjcet
+#' @param scDNSobject scDNSobject
 #' @param nx An integer value representing the number of grid (def:20)
 #' @param rmZero Logical value indicating whether to exclude 0 values when calculating the joint probability density (def: FALSE)
 #' @param topGene  An integer value representing The number of top genes is used to calculate the contribution of cells (def:100).The parameters will be invalid when the sigGene parameter is not NULL
@@ -10,13 +10,13 @@
 #' @keywords internal
 #'
 #' @examples
-scContribution<-function(scDNSobjcet,
+scContribution<-function(scDNSobject,
                           nx=20,
                           rmZero = F,
                           topGene=100,
                           sigGene=NULL){
 
-  Zscores <- scDNSobjcet@Zscore
+  Zscores <- scDNSobject@Zscore
 
   if(is.null(sigGene)){
     sigGene = Zscores$Gene[top_n_vector(Zscores$Zscores.Plus,topGene,returnLogical = T)]
@@ -39,11 +39,11 @@ scContribution<-function(scDNSobjcet,
   }
 
   pseudoGridNum = nx*nx # Used to calculate adjusted Div and cDiv.
-  Network = scDNSobjcet@Network
+  Network = scDNSobject@Network
   Network$id = 1:nrow(Network) # used to label the exracted sub-nework
   Network_sub = getSubNetByNode(Network,sigGene) # Extract sub-networks that cover significantly perturbed genes.
   # Network_sub$id = 1:nrow(Network_sub)
-  ExpData <- scDNSobjcet@data
+  ExpData <- scDNSobject@data
   ExpData = ExpData[unlist(Network_sub[,1:2])%>%unique(),]
   ExpData1_20 = mappingMinMaxRow(ExpData,minD = 1,maxD = nx,rmZero = rmZero) # mapping data
   ExpData1_20 = round(ExpData1_20,0) #
@@ -51,9 +51,9 @@ scContribution<-function(scDNSobjcet,
   SourceID = ExpData1_20[Network_sub[,1],] # the id of source or target nodes
   TargetID = ExpData1_20[Network_sub[,2],]
   filteredNetid = Network_sub$id
-  ContextA_R <- getConditionalDenstiy(DS = scDNSobjcet@JDensity_A[filteredNetid,
+  ContextA_R <- getConditionalDenstiy(DS = scDNSobject@JDensity_A[filteredNetid,
                                                                   , drop = F])
-  ContextB_R <- getConditionalDenstiy(DS = scDNSobjcet@JDensity_B[filteredNetid,
+  ContextB_R <- getConditionalDenstiy(DS = scDNSobject@JDensity_B[filteredNetid,
                                                                   , drop = F])
   Div.mat = JSD_batch_matrix_rawMt(Ctl = ContextA_R$DS,
                                    Pert = ContextB_R$DS) # Local divergence.
@@ -281,26 +281,26 @@ mappingMinMaxRow_w_Max_Min <- function(ma,
 
 
 
-scContribution_v2 <- function (scDNSobjcet, nx = 20, rmZero = F, topGene = 100, sigGene = NULL,rb=F)
+scContribution_v2 <- function (scDNSobject, nx = 20, rmZero = F, topGene = 100, sigGene = NULL,rb=F)
 {
   # Zscores <- IRF4_B_scDNSob@Zscore
   # Zscores <- IRF4_B_scDNSob@Zscore
-  Zscores <- scDNSobjcet@Zscore
+  Zscores <- scDNSobject@Zscore
   if (is.null(sigGene)) {
     sigGene = Zscores$Gene[top_n_vector(Zscores$Zscores.Plus,
                                         topGene, returnLogical = T)]
   }
 
-  Network = scDNSobjcet@Network
+  Network = scDNSobject@Network
   Network$id = 1:nrow(Network)
   Network_sub = getSubNetByNode(Network, sigGene)
 
 
 
 
-  NetPdata<- getCellDensity(scDNSob =  scDNSobjcet,
+  NetPdata<- getCellDensity(scDNSob =  scDNSobject,
                             ExpData = NULL,
-                            Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
+                            Div_weight = scDNSobject@Div.Parameters$Div_weight,
                             EdgeID = Network_sub$id,
                             rb = rb)
 
@@ -347,7 +347,7 @@ scContribution_v2 <- function (scDNSobjcet, nx = 20, rmZero = F, topGene = 100, 
   ScaleplusRS = ScaleplusRS * Zscores[sigGene, ]$Zscores.Plus
   ScaleplusRS
   # Pxdata <- data.frame(Type = IRF4_B_scDNSob@GroupLabel,CellType=IRF4_Bcells_Mut_SOB_sub$CellType,
-  #                      scZcores =as.vector(ScaleplusRS),Gene=scDNSobjcet@data['XAF1',])
+  #                      scZcores =as.vector(ScaleplusRS),Gene=scDNSobject@data['XAF1',])
   # ggplot(Pxdata,aes(CellType,scZcores,fill=Type))+geom_violin(scale='width')+stat_summary(fun.y = mean,geom='point',
   # color='red',position = position_dodge(width=0.9))
 }
@@ -482,17 +482,17 @@ getCellDensity <- function(scDNSob,
 
 
 
-scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NULL,rb=F,model=c('cDiv','Div','Plus')[3])
+scContribution_v3 <- function (scDNSobject, nx = 20, topGene = 100, sigGene = NULL,rb=F,model=c('cDiv','Div','Plus')[3])
 {
   # Zscores <- IRF4_B_scDNSob@Zscore
   # Zscores <- IRF4_B_scDNSob@Zscore
-  Zscores <- scDNSobjcet@Zscore
+  Zscores <- scDNSobject@Zscore
   if (is.null(sigGene)) {
     sigGene = Zscores$Gene[top_n_vector(Zscores$Zscores.ZsPlus,
                                         topGene, returnLogical = T,)]
   }
 
-  Network = scDNSobjcet@Network
+  Network = scDNSobject@Network
   Network$id = 1:nrow(Network)
   # mapping to Zscore
   Div.Sum <- replace2(c(Network[,1],Network[,2]),RawData = Zscores$Gene,RepData = Zscores$RawScore.Div)%>%as.numeric()%>%matrix(ncol = 2)
@@ -516,9 +516,9 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
   cDiv.mat_t_d1 <- NULL
   cDiv.mat_t_d2 <-NULL
   for(i in 1:loopTimes){
-    NetPdata<- getCellDensity(scDNSob =  scDNSobjcet,
+    NetPdata<- getCellDensity(scDNSob =  scDNSobject,
                               ExpData = NULL,
-                              Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
+                              Div_weight = scDNSobject@Div.Parameters$Div_weight,
                               EdgeID = Network_sub$id[((i-1)*1000+1):min(c(i*1000,nrow(Network_sub)))],
                               rb = rb)
     print(dim(NetPdata$Div.mat_t))
@@ -552,7 +552,7 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
                 length(), ncol = ncol(Div.mat_t))
   rownames(RS) = unlist(Network_sub[, 1:2]) %>% unique() %>%
     sort()
-  colnames(RS) = colnames(scDNSobjcet@data)
+  colnames(RS) = colnames(scDNSobject@data)
   # raw.1 = base::rowsum(Div.mat_t, Network_sub[, 1])
   # raw.2 = base::rowsum(Div.mat_t, Network_sub[, 2])
   raw.1 = base::rowsum(Div.mat_t_source, Network_sub[, 1])
@@ -564,7 +564,7 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
                  length(), ncol = ncol(Div.mat_t))
   rownames(cRS) = unlist(Network_sub[, 1:2]) %>% unique() %>%
     sort()
-  colnames(cRS) = colnames(scDNSobjcet@data)
+  colnames(cRS) = colnames(scDNSobject@data)
   raw.1 = base::rowsum(cDiv.mat_t_d1, Network_sub[, 1])
   raw.2 = base::rowsum(cDiv.mat_t_d2, Network_sub[, 2])
   cRS[rownames(raw.1), ] = raw.1
@@ -608,7 +608,7 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
   }
 
   # Pxdata <- data.frame(Type = IRF4_B_scDNSob@GroupLabel,CellType=IRF4_Bcells_Mut_SOB_sub$CellType,
-  #                      scZcores =as.vector(ScaleplusRS),Gene=scDNSobjcet@data['XAF1',])
+  #                      scZcores =as.vector(ScaleplusRS),Gene=scDNSobject@data['XAF1',])
   # ggplot(Pxdata,aes(CellType,scZcores,fill=Type))+geom_violin(scale='width')+stat_summary(fun.y = mean,geom='point',
   # color='red',position = position_dodge(width=0.9))
 }
@@ -617,7 +617,7 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
 
 #' scContribution_v4
 #'
-#' @param scDNSobjcet
+#' @param scDNSobject
 #' @param nx
 #' @param topGene
 #' @param sigGene
@@ -628,20 +628,20 @@ scContribution_v3 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
 #' @export
 #'
 #' @examples
-scContribution_v4 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NULL,rb=F,model=c('cDiv','Div','Plus')[3])
+scContribution_v4 <- function (scDNSobject, nx = 20, topGene = 100, sigGene = NULL,rb=F,model=c('cDiv','Div','Plus')[3])
 {
   # Zscores <- IRF4_B_scDNSob@Zscore
   # Zscores <- IRF4_B_scDNSob@Zscore
-  Zscores <- scDNSobjcet@Zscore
+  Zscores <- scDNSobject@Zscore
   if (is.null(sigGene)) {
     sigGene = Zscores$Gene[top_n_vector(Zscores$Zscores.ZsPlus,
                                         topGene, returnLogical = T,)]
   }
   #(0)
   #
-  Network = scDNSobjcet@Network
+  Network = scDNSobject@Network
   Network$id = 1:nrow(Network)
-  ncells <- ncol(scDNSobjcet@data)
+  ncells <- ncol(scDNSobject@data)
 
   # (1)mapping to Zscore
   message('mapping to Zscore')
@@ -664,8 +664,8 @@ scContribution_v4 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
   #
   #(01.)
   message('discretized expression level')
-  Exp20 <- scDNSobjcet@data[rownames(scDNSobjcet@data)%in%(unlist(Network_sub[,1:2])%>%unique()),]
-  Exp20 <- (Exp20 - rowMins(Exp20))/(rowMaxs(Exp20) - rowMins(Exp20)) * (scDNSobjcet@Div.Parameters$n.coarse - 1) + 1
+  Exp20 <- scDNSobject@data[rownames(scDNSobject@data)%in%(unlist(Network_sub[,1:2])%>%unique()),]
+  Exp20 <- (Exp20 - rowMins(Exp20))/(rowMaxs(Exp20) - rowMins(Exp20)) * (scDNSobject@Div.Parameters$n.coarse - 1) + 1
   Exp20 <- round(Exp20,digits = 0)
 
   suppressMessages(gc())
@@ -676,7 +676,7 @@ scContribution_v4 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
                 length(), ncol = ncells)
   rownames(RS) = unlist(Network_sub[, 1:2]) %>% unique() %>%
     sort()
-  colnames(RS) = colnames(scDNSobjcet@data)
+  colnames(RS) = colnames(scDNSobject@data)
 
   cRS <- RS
 
@@ -688,9 +688,9 @@ scContribution_v4 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
     id <- ((i-1)*5000+1):min(c(i*5000,nrow(Network_sub)))
     Network_sub_sub <- Network_sub[id,]
 
-    NetPdata <- getDiv(scDNSob =  scDNSobjcet,
+    NetPdata <- getDiv(scDNSob =  scDNSobject,
                        Exp20  = Exp20,
-                       Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
+                       Div_weight = scDNSobject@Div.Parameters$Div_weight,
                        Network_sub = Network_sub_sub,
                        rb = F)
     # return(list(Div.mat=Div.mat,cDiv.mat_D1=cDiv.mat_D1,cDiv.mat_D2=cDiv.mat_D2,Network_sub=Network_sub,NetInd_t=NetInd_t))
@@ -752,17 +752,17 @@ scContribution_v4 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
 
 }
 
-scContribution_v5 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NULL,
+scContribution_v5 <- function (scDNSobject, nx = 20, topGene = 100, sigGene = NULL,
                                rb = F, model = c("cDiv", "Div", "Plus")[3])
 {
-  Zscores <- scDNSobjcet@Zscore
+  Zscores <- scDNSobject@Zscore
   if (is.null(sigGene)) {
     sigGene = Zscores$Gene[top_n_vector(Zscores$Zscores.ZsPlus,
                                         topGene, returnLogical = T, )]
   }
-  Network = scDNSobjcet@Network
+  Network = scDNSobject@Network
   Network$id = 1:nrow(Network)
-  ncells <- ncol(scDNSobjcet@data)
+  ncells <- ncol(scDNSobject@data)
   message("mapping to Zscore")
   Div.Sum <- replace2(c(Network[, 1], Network[, 2]), RawData = Zscores$Gene,
                       RepData = Zscores$RawScore.Div) %>% as.numeric() %>%
@@ -786,15 +786,15 @@ scContribution_v5 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
   Network_sub = getSubNetByNode(Network, sigGene)
   nNet <- nrow(Network_sub)
   message("discretized expression level")
-  Exp20 <- scDNSobjcet@data[rownames(scDNSobjcet@data) %in%
+  Exp20 <- scDNSobject@data[rownames(scDNSobject@data) %in%
                               (unlist(Network_sub[, 1:2]) %>% unique()), ]
   # Exp20 <- (Exp20 - rowMins(Exp20))/(rowMaxs(Exp20) - rowMins(Exp20)) *
-  #   (scDNSobjcet@Div.Parameters$n.grid + 1) + 0
+  #   (scDNSobject@Div.Parameters$n.grid + 1) + 0
   # Exp20 <- sqrt(Exp20)
   Exp20 <- (Exp20 - rowMins(Exp20))/(rowMaxs(Exp20)-rowMins(Exp20)) *
-    (scDNSobjcet@Div.Parameters$n.coarse - 1) + 1
+    (scDNSobject@Div.Parameters$n.coarse - 1) + 1
   # Exp20 <- (Exp20 - rowMins(Exp20))/(rowMaxs(Exp20) - rowMins(Exp20)) *
-  #   (scDNSobjcet@Div.Parameters$n.coarse - 1) + 1
+  #   (scDNSobject@Div.Parameters$n.coarse - 1) + 1
   Exp20 <- round(Exp20, digits = 0)
   suppressMessages(gc())
   message("scZcores")
@@ -802,7 +802,7 @@ scContribution_v5 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
                 length(), ncol = ncells)
   rownames(RS) = unlist(Network_sub[, 1:2]) %>% unique() %>%
     sort()
-  colnames(RS) = colnames(scDNSobjcet@data)
+  colnames(RS) = colnames(scDNSobject@data)
   cRS <- RS
   loopTimes <- ceiling(nrow(Network_sub)/5000)
   message("number of edeges")
@@ -810,8 +810,8 @@ scContribution_v5 <- function (scDNSobjcet, nx = 20, topGene = 100, sigGene = NU
   for (i in 1:loopTimes) {
     id <- ((i - 1) * 5000 + 1):min(c(i * 5000, nrow(Network_sub)))
     Network_sub_sub <- Network_sub[id, ]
-    NetPdata <- getDiv(scDNSob = scDNSobjcet, Exp20 = Exp20,
-                       Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
+    NetPdata <- getDiv(scDNSob = scDNSobject, Exp20 = Exp20,
+                       Div_weight = scDNSobject@Div.Parameters$Div_weight,
                        Network_sub = Network_sub_sub, rb = F)
     NetInd_t <- NetPdata$NetInd_t
     Div.mat <- NetPdata$Div.mat

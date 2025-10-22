@@ -97,7 +97,7 @@ CreatScDNSobject <- function(counts,
                    plot = FALSE)
   gc()
 
-  scDNSobjcet <- new(Class = "scDNS",
+  scDNSobject <- new(Class = "scDNS",
                      counts = counts,
                      data = data,
                      Network = Network,
@@ -111,7 +111,7 @@ CreatScDNSobject <- function(counts,
                      JDensity_A = matrix(),
                      JDensity_B = matrix(),
                      uniCase = character())
-  scDNSobjcet
+  scDNSobject
 
 
 }
@@ -120,7 +120,7 @@ CreatScDNSobject <- function(counts,
 
 #' scDNS_1_CalDivs
 #'
-#' @param scDNSobjcet scDNSobjcet
+#' @param scDNSobject scDNSobject
 #' @param k a numerical value represents the kth (def: 10) nearest neighbor point
 #' @param n.grid An integer value representing the number of grid (def:60) used to calculate the joint probability density
 #' @param n.coarse An integer value representing the number of grid (def:20) after coarse-graining
@@ -138,11 +138,11 @@ CreatScDNSobject <- function(counts,
 #' @param parllelModel
 #'
 #' @return
-#' scDNSobjcet
+#' scDNSobject
 #' @export
 #'
 #' @examples
-scDNS_1_CalDivs <- function(scDNSobjcet,
+scDNS_1_CalDivs <- function(scDNSobject,
                             k = NULL,
                             n.grid = NULL,
                             NoiseRemove = NULL,
@@ -158,18 +158,18 @@ scDNS_1_CalDivs <- function(scDNSobjcet,
                             exclude.zero = NULL,
                             returnCDS = NULL,
                             parllelModel = NULL){
-  if(!is.null(k)){scDNSobjcet@Div.Parameters$k=k}
-  if(!is.null(n.grid)){scDNSobjcet@Div.Parameters$n.grid=n.grid}
-  if(!is.null(NoiseRemove)){scDNSobjcet@Div.Parameters$NoiseRemove=NoiseRemove}
-  if(!is.null(CoarseGrain)){scDNSobjcet@Div.Parameters$CoarseGrain=CoarseGrain}
-  if(!is.null(n.coarse)){scDNSobjcet@Div.Parameters$n.coarse=n.coarse}
-  if(!is.null(h)){scDNSobjcet@Div.Parameters$h=h}
-  if(!is.null(loop.size)){scDNSobjcet@Div.Parameters$loop.size=loop.size}
-  if(!is.null(parallel.sz)){scDNSobjcet@Div.Parameters$parallel.sz=parallel.sz}
-  if(!is.null(verbose)){scDNSobjcet@Div.Parameters$verbose=verbose}
-  if(!is.null(exclude.zero)){scDNSobjcet@Div.Parameters$exclude.zero=exclude.zero}
-  if(!is.null(returnCDS)){scDNSobjcet@Div.Parameters$returnCDS=returnCDS}
-  if(!is.null(parllelModel)){scDNSobjcet@Div.Parameters$parllelModel=parllelModel}
+  if(!is.null(k)){scDNSobject@Div.Parameters$k=k}
+  if(!is.null(n.grid)){scDNSobject@Div.Parameters$n.grid=n.grid}
+  if(!is.null(NoiseRemove)){scDNSobject@Div.Parameters$NoiseRemove=NoiseRemove}
+  if(!is.null(CoarseGrain)){scDNSobject@Div.Parameters$CoarseGrain=CoarseGrain}
+  if(!is.null(n.coarse)){scDNSobject@Div.Parameters$n.coarse=n.coarse}
+  if(!is.null(h)){scDNSobject@Div.Parameters$h=h}
+  if(!is.null(loop.size)){scDNSobject@Div.Parameters$loop.size=loop.size}
+  if(!is.null(parallel.sz)){scDNSobject@Div.Parameters$parallel.sz=parallel.sz}
+  if(!is.null(verbose)){scDNSobject@Div.Parameters$verbose=verbose}
+  if(!is.null(exclude.zero)){scDNSobject@Div.Parameters$exclude.zero=exclude.zero}
+  if(!is.null(returnCDS)){scDNSobject@Div.Parameters$returnCDS=returnCDS}
+  if(!is.null(parllelModel)){scDNSobject@Div.Parameters$parllelModel=parllelModel}
 
   # Div.Parameters <- list(k= k,
   #                        n.grid = n.grid,
@@ -185,128 +185,128 @@ scDNS_1_CalDivs <- function(scDNSobjcet,
   #                        exclude.zero = exclude.zero,
   #                        parllelModel = parllelModel)
 
-  # scDNSobjcet@Div.Parameters <- Div.Parameters
+  # scDNSobject@Div.Parameters <- Div.Parameters
 
-  NetDivs <- getKLD_cKLDnetwork(scDNSobjcet@data,
-                     Network = scDNSobjcet@Network,
-                     GroupLabel = scDNSobjcet@GroupLabel,
-                     k = scDNSobjcet@Div.Parameters$k,
-                     n.grid = scDNSobjcet@Div.Parameters$n.grid,
-                     NoiseRemove = scDNSobjcet@Div.Parameters$NoiseRemove,
-                     CoarseGrain = scDNSobjcet@Div.Parameters$CoarseGrain,
-                     n.coarse = scDNSobjcet@Div.Parameters$n.coarse,
-                     ds.method = scDNSobjcet@Div.Parameters$ds.method,
-                     divergence = scDNSobjcet@Div.Parameters$divergence,
-                     h = scDNSobjcet@Div.Parameters$h,
-                     noiseSd = scDNSobjcet@Div.Parameters$noiseSd,
-                     loop.size=scDNSobjcet@Div.Parameters$loop.size,
-                     parallel.sz = scDNSobjcet@Div.Parameters$parallel.sz,
-                     verbose = scDNSobjcet@Div.Parameters$verbose,
-                     exclude.zero = scDNSobjcet@Div.Parameters$exclude.zero,
+  NetDivs <- getKLD_cKLDnetwork(scDNSobject@data,
+                     Network = scDNSobject@Network,
+                     GroupLabel = scDNSobject@GroupLabel,
+                     k = scDNSobject@Div.Parameters$k,
+                     n.grid = scDNSobject@Div.Parameters$n.grid,
+                     NoiseRemove = scDNSobject@Div.Parameters$NoiseRemove,
+                     CoarseGrain = scDNSobject@Div.Parameters$CoarseGrain,
+                     n.coarse = scDNSobject@Div.Parameters$n.coarse,
+                     ds.method = scDNSobject@Div.Parameters$ds.method,
+                     divergence = scDNSobject@Div.Parameters$divergence,
+                     h = scDNSobject@Div.Parameters$h,
+                     noiseSd = scDNSobject@Div.Parameters$noiseSd,
+                     loop.size=scDNSobject@Div.Parameters$loop.size,
+                     parallel.sz = scDNSobject@Div.Parameters$parallel.sz,
+                     verbose = scDNSobject@Div.Parameters$verbose,
+                     exclude.zero = scDNSobject@Div.Parameters$exclude.zero,
                      returnCDS = FALSE,
-                     Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
-                     parllelModel = scDNSobjcet@Div.Parameters$parllelModel)
-  scDNSobjcet@Network <- NetDivs$Network
-  scDNSobjcet@JDensity_A <- NetDivs$ContextA_DS
-  scDNSobjcet@JDensity_B <- NetDivs$ContextB_DS
-  scDNSobjcet@uniCase <- NetDivs$uniCase
+                     Div_weight = scDNSobject@Div.Parameters$Div_weight,
+                     parllelModel = scDNSobject@Div.Parameters$parllelModel)
+  scDNSobject@Network <- NetDivs$Network
+  scDNSobject@JDensity_A <- NetDivs$ContextA_DS
+  scDNSobject@JDensity_B <- NetDivs$ContextB_DS
+  scDNSobject@uniCase <- NetDivs$uniCase
   rm(NetDivs)
   invisible(gc())
-  scDNSobjcet
+  scDNSobject
 
 }
 
 #' scDNS_2_creatNEAModel
 #'
-#' @param scDNSobjcet scDNSobjcet
+#' @param scDNSobject scDNSobject
 #' @param n.dropGene Integer, number of cells sampled for model building (def:3000)
 #' @param n.randNet Integer, number of cells sampled for model building (def:3000)
 #' @param sdBias Numeric value, bias coefficient used to penalize low degree genes(>=1) (def:1.1)
 #'
 #' @return
-#' scDNSobjcet
+#' scDNSobject
 #' @export
 #'
 #' @examples
-scDNS_2_creatNEAModel <- function(scDNSobjcet,
+scDNS_2_creatNEAModel <- function(scDNSobject,
                                   n.dropGene = NULL,
                                   n.randNet = NULL,
                                   sdBias=NULL){
 
-  if(!is.null(n.dropGene)){scDNSobjcet@NEA.Parameters$n.dropGene=n.dropGene}
-  if(!is.null(n.randNet)){scDNSobjcet@NEA.Parameters$n.randNet=n.randNet}
-  if(!is.null(sdBias)){scDNSobjcet@NEA.Parameters$sdBias=sdBias}
+  if(!is.null(n.dropGene)){scDNSobject@NEA.Parameters$n.dropGene=n.dropGene}
+  if(!is.null(n.randNet)){scDNSobject@NEA.Parameters$n.randNet=n.randNet}
+  if(!is.null(sdBias)){scDNSobject@NEA.Parameters$sdBias=sdBias}
 
 
   # NEA.Parameters <- list(do.impute = FALSE,
   #                        n.dropGene = n.dropGene,
   #                        n.randNet = n.randNet,
   #                        sdBias = sdBias)
-  # scDNSobjcet@NEA.Parameters <- NEA.Parameters
-  NEAModel <- creatNEAModel(counts=scDNSobjcet@counts,
-                            ExpData=scDNSobjcet@data,
-                            do.impute = scDNSobjcet@NEA.Parameters$do.impute,
-                            n.dropGene = scDNSobjcet@NEA.Parameters$n.dropGene,
-                            n.randNet = scDNSobjcet@NEA.Parameters$n.randNet,
-                            k = scDNSobjcet@Div.Parameters$k,
-                            Likelihood=scDNSobjcet@GeneVariability,
-                            GroupLabel=scDNSobjcet@GroupLabel,
-                            n.grid = scDNSobjcet@Div.Parameters$n.grid,
-                            n.coarse=scDNSobjcet@Div.Parameters$n.coarse,
-                            noiseSd = scDNSobjcet@Div.Parameters$noiseSd,
-                            Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
-                            CoarseGrain=scDNSobjcet@Div.Parameters$CoarseGrain,
-                            loop.size=scDNSobjcet@Div.Parameters$loop.size,
-                            parallel.sz = scDNSobjcet@Div.Parameters$parallel.sz,
-                            verbose = scDNSobjcet@Div.Parameters$verbose,
-                            exclude.zero = scDNSobjcet@Div.Parameters$exclude.zero,
-                            NoiseRemove = scDNSobjcet@Div.Parameters$NoiseRemove,
-                            divergence = scDNSobjcet@Div.Parameters$divergence,
-                            ds.method = scDNSobjcet@Div.Parameters$ds.method,
-                            h=scDNSobjcet@Div.Parameters$h,
-                            sdBias=scDNSobjcet@NEA.Parameters$sdBias,
-                            rb.jsd = scDNSobjcet@Div.Parameters$rb.jsd,
-                            parllelModel =  scDNSobjcet@Div.Parameters$parllelModel)
-  scDNSobjcet@NEAModel <- NEAModel
-  scDNSobjcet
+  # scDNSobject@NEA.Parameters <- NEA.Parameters
+  NEAModel <- creatNEAModel(counts=scDNSobject@counts,
+                            ExpData=scDNSobject@data,
+                            do.impute = scDNSobject@NEA.Parameters$do.impute,
+                            n.dropGene = scDNSobject@NEA.Parameters$n.dropGene,
+                            n.randNet = scDNSobject@NEA.Parameters$n.randNet,
+                            k = scDNSobject@Div.Parameters$k,
+                            Likelihood=scDNSobject@GeneVariability,
+                            GroupLabel=scDNSobject@GroupLabel,
+                            n.grid = scDNSobject@Div.Parameters$n.grid,
+                            n.coarse=scDNSobject@Div.Parameters$n.coarse,
+                            noiseSd = scDNSobject@Div.Parameters$noiseSd,
+                            Div_weight = scDNSobject@Div.Parameters$Div_weight,
+                            CoarseGrain=scDNSobject@Div.Parameters$CoarseGrain,
+                            loop.size=scDNSobject@Div.Parameters$loop.size,
+                            parallel.sz = scDNSobject@Div.Parameters$parallel.sz,
+                            verbose = scDNSobject@Div.Parameters$verbose,
+                            exclude.zero = scDNSobject@Div.Parameters$exclude.zero,
+                            NoiseRemove = scDNSobject@Div.Parameters$NoiseRemove,
+                            divergence = scDNSobject@Div.Parameters$divergence,
+                            ds.method = scDNSobject@Div.Parameters$ds.method,
+                            h=scDNSobject@Div.Parameters$h,
+                            sdBias=scDNSobject@NEA.Parameters$sdBias,
+                            rb.jsd = scDNSobject@Div.Parameters$rb.jsd,
+                            parllelModel =  scDNSobject@Div.Parameters$parllelModel)
+  scDNSobject@NEAModel <- NEAModel
+  scDNSobject
 }
 
 
 #' scDNS_3_GeneZscore
 #'
-#' @param scDNSobjcet scDNSobjcet
+#' @param scDNSobject scDNSobject
 #'
 #' @return
-#' scDNSobjcet
+#' scDNSobject
 #' @export
 #'
 #' @examples
-scDNS_3_GeneZscore <- function(scDNSobjcet){
-  scDNSobjcet <- getZscore(EdgeScore = scDNSobjcet,
-                            NEAModel = scDNSobjcet@NEAModel,
-                            Likelihood = scDNSobjcet@GeneVariability )
-  scDNSobjcet
+scDNS_3_GeneZscore <- function(scDNSobject){
+  scDNSobject <- getZscore(EdgeScore = scDNSobject,
+                            NEAModel = scDNSobject@NEAModel,
+                            Likelihood = scDNSobject@GeneVariability )
+  scDNSobject
 }
 
 #' scDNS_4_scContribution
 #'
-#' @param scDNSobjcet scDNSobjcet
+#' @param scDNSobject scDNSobject
 #' @param topGene Integer value, representing the number of top significant genes(def:100).When sigGene is not NULL, topGene is invalid.
 #' @param sigGene A vector of strings representing the set of genes of interest (def:NULL)
 #' @param q.th Adjusted p-value threshold
 #'
 #' @return
-#' scDNSobjcet
+#' scDNSobject
 #' @export
 #'
 #' @examples
-scDNS_4_scContribution <- function(scDNSobjcet,
+scDNS_4_scContribution <- function(scDNSobject,
                                    topGene=100,
                                    sigGene=NULL,
                                    q.th=0.01,...){
 
   if(is.null(sigGene)){
-    Zscore <- scDNSobjcet@Zscore
+    Zscore <- scDNSobject@Zscore
     Zscore$Qvalue.Zsplus <- p.adjust(Zscore$Pvalues.ZsPlus,method = 'BH')
     sigGene <- Zscore$Gene[Zscore$Qvalue.Zsplus<q.th]
     if(length(sigGene)==0){
@@ -316,41 +316,41 @@ scDNS_4_scContribution <- function(scDNSobjcet,
     }
   }
 
-  nx <-  sqrt(ncol(scDNSobjcet@JDensity_A))
-  # scCon_res <- scContribution(EdgeScore = scDNSobjcet@Network,
-  #                    Zscores = scDNSobjcet@Zscore,
-  #                    ExpData = scDNSobjcet@data,
+  nx <-  sqrt(ncol(scDNSobject@JDensity_A))
+  # scCon_res <- scContribution(EdgeScore = scDNSobject@Network,
+  #                    Zscores = scDNSobject@Zscore,
+  #                    ExpData = scDNSobject@data,
   #                    nx = nx,
-  #                    rmZero = scDNSobjcet@Div.Parameters$exclude.zero,
+  #                    rmZero = scDNSobject@Div.Parameters$exclude.zero,
   #                    topGene = topGene,
   #                    sigGene = sigGene,
-  #                    NEAModel = scDNSobjcet@NEAModel)
-  # scCon_res <- scContribution(scDNSobjcet,
+  #                    NEAModel = scDNSobject@NEAModel)
+  # scCon_res <- scContribution(scDNSobject,
   #                          nx=nx,
-  #                          rmZero = scDNSobjcet@Div.Parameters$exclude.zero,
+  #                          rmZero = scDNSobject@Div.Parameters$exclude.zero,
   #                          topGene=topGene,
   #                          sigGene=sigGene)
-  # scCon_res <- scContribution_v2(scDNSobjcet,
+  # scCon_res <- scContribution_v2(scDNSobject,
   #                                nx=nx,
-  #                                rmZero = scDNSobjcet@Div.Parameters$exclude.zero,
+  #                                rmZero = scDNSobject@Div.Parameters$exclude.zero,
   #                                topGene=topGene,
   #                                sigGene=sigGene,
-  #                                rb = scDNSobjcet@Div.Parameters$rb.jsd)
-  # scCon_res <- scContribution_v3(scDNSobjcet,
+  #                                rb = scDNSobject@Div.Parameters$rb.jsd)
+  # scCon_res <- scContribution_v3(scDNSobject,
   #                             nx=nx,
-  #                             # rmZero = scDNSobjcet@Div.Parameters$exclude.zero,
+  #                             # rmZero = scDNSobject@Div.Parameters$exclude.zero,
   #                             topGene=topGene,
   #                             sigGene=sigGene,
-  #                             rb = scDNSobjcet@Div.Parameters$rb.jsd,...)
-  scCon_res <- scContribution_v5(scDNSobjcet,
+  #                             rb = scDNSobject@Div.Parameters$rb.jsd,...)
+  scCon_res <- scContribution_v5(scDNSobject,
                                  nx=nx,
-                                 # rmZero = scDNSobjcet@Div.Parameters$exclude.zero,
+                                 # rmZero = scDNSobject@Div.Parameters$exclude.zero,
                                  topGene=topGene,
                                  sigGene=sigGene,
-                                 rb = scDNSobjcet@Div.Parameters$rb.jsd,...)
+                                 rb = scDNSobject@Div.Parameters$rb.jsd,...)
 
-  scDNSobjcet@scZscore <- scCon_res
-  scDNSobjcet
+  scDNSobject@scZscore <- scCon_res
+  scDNSobject
 }
 
 

@@ -522,11 +522,11 @@ fit_poly <- function(x,y,degree = 1, raw = FALSE,...){
   return(list(predictP=modelx,p=p))
 }
 
-GeneInteraion <- function(scDNSobjcet,
+GeneInteraion <- function(scDNSobject,
          Nodes,
          EdgeID = NULL,
          subEdgeID = 1,fillColorData=NULL){
-  Network <- scDNSobjcet@Network
+  Network <- scDNSobject@Network
   if (is.null(EdgeID)) {
     if (length(Nodes) == 1) {
       EdgeID = Network[, 1] %in% Nodes | Network[, 2] %in%
@@ -547,16 +547,16 @@ GeneInteraion <- function(scDNSobjcet,
   # subnet <- Network[EdgeID, ]
   # print(EdgeID)
   if(!is.null(fillColorData)){
-    Pdata <- data.frame(G1=scDNSobjcet@data[Network[EdgeID,1],],
-                        G2=scDNSobjcet@data[Network[EdgeID,2],],
+    Pdata <- data.frame(G1=scDNSobject@data[Network[EdgeID,1],],
+                        G2=scDNSobject@data[Network[EdgeID,2],],
                         scContubions=fillColorData,
-                        label=scDNSobjcet@GroupLabel)
+                        label=scDNSobject@GroupLabel)
     ggplot(Pdata,aes(G1,G2,color=label,fill=scContubions))+geom_point(shape=21,alpha=0.9,size=2,stroke=0.1)+labs(x=Network[EdgeID,1],y=Network[EdgeID,2])+theme_cowplot_i()
   }else{
-    Pdata <- data.frame(G1=scDNSobjcet@data[Network[EdgeID,1],],
-                        G2=scDNSobjcet@data[Network[EdgeID,2],],
+    Pdata <- data.frame(G1=scDNSobject@data[Network[EdgeID,1],],
+                        G2=scDNSobject@data[Network[EdgeID,2],],
                         # scContubions=fillColorData,
-                        label=scDNSobjcet@GroupLabel)
+                        label=scDNSobject@GroupLabel)
     ggplot(Pdata,aes(G1,G2,color=label))+geom_point()+labs(x=Network[EdgeID,1],y=Network[EdgeID,2])+theme_cowplot_i()
   }
 

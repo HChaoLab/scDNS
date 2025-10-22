@@ -1,6 +1,6 @@
 #' scDNS_2_creatNEAModel_v2
 #'
-#' @param scDNSobjcet scDNS objcet
+#' @param scDNSobject scDNS objcet
 #' @param n.dropGene
 #' @param n.randNet
 #' @param sdBias
@@ -10,35 +10,35 @@
 #' @export
 #'
 #' @examples
-scDNS_2_creatNEAModel_v2 <- function (scDNSobjcet, n.dropGene = NULL, n.randNet = NULL,
+scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet = NULL,
                                       sdBias = NULL,GroupLabel=NULL)
 {
   if (!is.null(n.dropGene)) {
-    scDNSobjcet@NEA.Parameters$n.dropGene = n.dropGene
+    scDNSobject@NEA.Parameters$n.dropGene = n.dropGene
   }else{
-    n.dropGene <- scDNSobjcet@NEA.Parameters$n.dropGene
+    n.dropGene <- scDNSobject@NEA.Parameters$n.dropGene
   }
   if (!is.null(n.randNet)) {
-    scDNSobjcet@NEA.Parameters$n.randNet = n.randNet
+    scDNSobject@NEA.Parameters$n.randNet = n.randNet
   }
   if (!is.null(sdBias)) {
-    scDNSobjcet@NEA.Parameters$sdBias = sdBias
+    scDNSobject@NEA.Parameters$sdBias = sdBias
   }
   if(is.null(GroupLabel)){
-    GroupLabel <- scDNSobjcet@GroupLabel
+    GroupLabel <- scDNSobject@GroupLabel
   }
 
   #
   uniCase = unique(GroupLabel)
-  ExpData <- scDNSobjcet@data
+  ExpData <- scDNSobject@data
   RandGene <- sample(rownames(ExpData), pmin(n.dropGene, nrow(ExpData)))
   ExpData <- ExpData[RandGene,]
 
-  counts = scDNSobjcet@counts[RandGene,]
+  counts = scDNSobject@counts[RandGene,]
   dropoutMatrix = Matrix::tcrossprod(counts != 0)
   dropoutMatrix_log = round(log10(dropoutMatrix + 1), 1)
 
-  Likelihood <- scDNSobjcet@GeneVariability
+  Likelihood <- scDNSobject@GeneVariability
   #
   message("creat random net")
   CandidateNet_samll = NULL
@@ -66,32 +66,32 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobjcet, n.dropGene = NULL, n.randNet 
 
   # #
   NEAModel_randNet <- creatNEAModel_test(ExpData = ExpData, CandidateNet_samll=CandidateNet_samll,
-                                         k = scDNSobjcet@Div.Parameters$k,
+                                         k = scDNSobject@Div.Parameters$k,
                                          GroupLabel = GroupLabel,
-                                         n.grid = scDNSobjcet@Div.Parameters$n.grid, n.coarse = scDNSobjcet@Div.Parameters$n.coarse,
-                                         noiseSd = scDNSobjcet@Div.Parameters$noiseSd, Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
-                                         CoarseGrain = scDNSobjcet@Div.Parameters$CoarseGrain,
-                                         loop.size = scDNSobjcet@Div.Parameters$loop.size, parallel.sz = scDNSobjcet@Div.Parameters$parallel.sz,
-                                         verbose = scDNSobjcet@Div.Parameters$verbose, exclude.zero = scDNSobjcet@Div.Parameters$exclude.zero,
-                                         NoiseRemove = scDNSobjcet@Div.Parameters$NoiseRemove,
-                                         divergence = scDNSobjcet@Div.Parameters$divergence,
-                                         ds.method = scDNSobjcet@Div.Parameters$ds.method, h = scDNSobjcet@Div.Parameters$h,
-                                         sdBias = scDNSobjcet@NEA.Parameters$sdBias, rb.jsd = scDNSobjcet@Div.Parameters$rb.jsd,
-                                         parllelModel = scDNSobjcet@Div.Parameters$parllelModel)
+                                         n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
+                                         noiseSd = scDNSobject@Div.Parameters$noiseSd, Div_weight = scDNSobject@Div.Parameters$Div_weight,
+                                         CoarseGrain = scDNSobject@Div.Parameters$CoarseGrain,
+                                         loop.size = scDNSobject@Div.Parameters$loop.size, parallel.sz = scDNSobject@Div.Parameters$parallel.sz,
+                                         verbose = scDNSobject@Div.Parameters$verbose, exclude.zero = scDNSobject@Div.Parameters$exclude.zero,
+                                         NoiseRemove = scDNSobject@Div.Parameters$NoiseRemove,
+                                         divergence = scDNSobject@Div.Parameters$divergence,
+                                         ds.method = scDNSobject@Div.Parameters$ds.method, h = scDNSobject@Div.Parameters$h,
+                                         sdBias = scDNSobject@NEA.Parameters$sdBias, rb.jsd = scDNSobject@Div.Parameters$rb.jsd,
+                                         parllelModel = scDNSobject@Div.Parameters$parllelModel)
   # #
   NEAModel_shuffleLabel <- creatNEAModel_test( ExpData = ExpData, CandidateNet_samll=CandidateNet_samll,
-                                               k = scDNSobjcet@Div.Parameters$k,
+                                               k = scDNSobject@Div.Parameters$k,
                                                GroupLabel = sample(GroupLabel), ###########################❤
-                                               n.grid = scDNSobjcet@Div.Parameters$n.grid, n.coarse = scDNSobjcet@Div.Parameters$n.coarse,
-                                               noiseSd = scDNSobjcet@Div.Parameters$noiseSd, Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
-                                               CoarseGrain = scDNSobjcet@Div.Parameters$CoarseGrain,
-                                               loop.size = scDNSobjcet@Div.Parameters$loop.size, parallel.sz = scDNSobjcet@Div.Parameters$parallel.sz,
-                                               verbose = scDNSobjcet@Div.Parameters$verbose, exclude.zero = scDNSobjcet@Div.Parameters$exclude.zero,
-                                               NoiseRemove = scDNSobjcet@Div.Parameters$NoiseRemove,
-                                               divergence = scDNSobjcet@Div.Parameters$divergence,
-                                               ds.method = scDNSobjcet@Div.Parameters$ds.method, h = scDNSobjcet@Div.Parameters$h,
-                                               sdBias = scDNSobjcet@NEA.Parameters$sdBias, rb.jsd = scDNSobjcet@Div.Parameters$rb.jsd,
-                                               parllelModel = scDNSobjcet@Div.Parameters$parllelModel)
+                                               n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
+                                               noiseSd = scDNSobject@Div.Parameters$noiseSd, Div_weight = scDNSobject@Div.Parameters$Div_weight,
+                                               CoarseGrain = scDNSobject@Div.Parameters$CoarseGrain,
+                                               loop.size = scDNSobject@Div.Parameters$loop.size, parallel.sz = scDNSobject@Div.Parameters$parallel.sz,
+                                               verbose = scDNSobject@Div.Parameters$verbose, exclude.zero = scDNSobject@Div.Parameters$exclude.zero,
+                                               NoiseRemove = scDNSobject@Div.Parameters$NoiseRemove,
+                                               divergence = scDNSobject@Div.Parameters$divergence,
+                                               ds.method = scDNSobject@Div.Parameters$ds.method, h = scDNSobject@Div.Parameters$h,
+                                               sdBias = scDNSobject@NEA.Parameters$sdBias, rb.jsd = scDNSobject@Div.Parameters$rb.jsd,
+                                               parllelModel = scDNSobject@Div.Parameters$parllelModel)
 
   message('shuffle_rows_by_group')
   shuffleData <- shuffle_rows_by_group(counts,data = ExpData,GroupLabel = GroupLabel)
@@ -106,21 +106,21 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobjcet, n.dropGene = NULL, n.randNet 
   NEAModel_RandDistrubution <- creatNEAModel_test( ExpData = shuffleData$data,
                                                    CandidateNet_samll=CandidateNet_samll,
 
-                                                   k = scDNSobjcet@Div.Parameters$k,
+                                                   k = scDNSobject@Div.Parameters$k,
                                                    GroupLabel = GroupLabel,
-                                                   n.grid = scDNSobjcet@Div.Parameters$n.grid, n.coarse = scDNSobjcet@Div.Parameters$n.coarse,
-                                                   noiseSd = scDNSobjcet@Div.Parameters$noiseSd, Div_weight = scDNSobjcet@Div.Parameters$Div_weight,
-                                                   CoarseGrain = scDNSobjcet@Div.Parameters$CoarseGrain,
-                                                   loop.size = scDNSobjcet@Div.Parameters$loop.size, parallel.sz = scDNSobjcet@Div.Parameters$parallel.sz,
-                                                   verbose = scDNSobjcet@Div.Parameters$verbose, exclude.zero = scDNSobjcet@Div.Parameters$exclude.zero,
-                                                   NoiseRemove = scDNSobjcet@Div.Parameters$NoiseRemove,
-                                                   divergence = scDNSobjcet@Div.Parameters$divergence,
-                                                   ds.method = scDNSobjcet@Div.Parameters$ds.method, h = scDNSobjcet@Div.Parameters$h,
-                                                   sdBias = scDNSobjcet@NEA.Parameters$sdBias, rb.jsd = scDNSobjcet@Div.Parameters$rb.jsd,
-                                                   parllelModel = scDNSobjcet@Div.Parameters$parllelModel)
+                                                   n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
+                                                   noiseSd = scDNSobject@Div.Parameters$noiseSd, Div_weight = scDNSobject@Div.Parameters$Div_weight,
+                                                   CoarseGrain = scDNSobject@Div.Parameters$CoarseGrain,
+                                                   loop.size = scDNSobject@Div.Parameters$loop.size, parallel.sz = scDNSobject@Div.Parameters$parallel.sz,
+                                                   verbose = scDNSobject@Div.Parameters$verbose, exclude.zero = scDNSobject@Div.Parameters$exclude.zero,
+                                                   NoiseRemove = scDNSobject@Div.Parameters$NoiseRemove,
+                                                   divergence = scDNSobject@Div.Parameters$divergence,
+                                                   ds.method = scDNSobject@Div.Parameters$ds.method, h = scDNSobject@Div.Parameters$h,
+                                                   sdBias = scDNSobject@NEA.Parameters$sdBias, rb.jsd = scDNSobject@Div.Parameters$rb.jsd,
+                                                   parllelModel = scDNSobject@Div.Parameters$parllelModel)
   NEAModel <- list(randNet=NEAModel_randNet,shuffleLabel=NEAModel_shuffleLabel,RandDistrubution=NEAModel_RandDistrubution)
-  scDNSobjcet@NEAModel <- NEAModel
-  scDNSobjcet
+  scDNSobject@NEAModel <- NEAModel
+  scDNSobject
 
 }
 
@@ -586,9 +586,9 @@ getZscore_v2 <- function (EdgeScore, NEAModel, GeneLikelihood,EdgeDataSpecific=N
   }
 }
 
-scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL,repTime=1,testTime=5,FDRmethods='BY',corr_adjust = T)
+scDNS_3_GeneZscore_v2 <- function(scDNSobject,reCreatNEA=FALSE,PositiveGene=NULL,repTime=1,testTime=5,FDRmethods='BY',corr_adjust = T)
 {
-  NEAModel <- scDNSobjcet@NEAModel
+  NEAModel <- scDNSobject@NEAModel
   if(reCreatNEA&!is.null(PositiveGene)){
     Acc_record <- NULL
     for(i in 1:testTime){
@@ -608,14 +608,14 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
       #
       NEAModel_temp <- list(randNet=NEAModel_randNet,shuffleLabel=NEAModel_shuffleLabel,RandDistrubution=NEAModel_RandDistrubution)
 
-      Res_randNet <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$randNet,
-                                  GeneLikelihood = scDNSobjcet@GeneVariability)
+      Res_randNet <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$randNet,
+                                  GeneLikelihood = scDNSobject@GeneVariability)
       # Res_randNet$Zscores[PositiveGene,]
-      Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$shuffleLabel,
-                                       GeneLikelihood = scDNSobjcet@GeneVariability)
+      Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$shuffleLabel,
+                                       GeneLikelihood = scDNSobject@GeneVariability)
       # Res_shuffleLabel$Zscores[PositiveGene,]
-      Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$RandDistrubution,
-                                           GeneLikelihood = scDNSobjcet@GeneVariability)
+      Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$RandDistrubution,
+                                           GeneLikelihood = scDNSobject@GeneVariability)
 
       # Res_RandDistrubution$Zscores[PositiveGene,]
       Zs_data <- data.frame(randNet=Res_randNet$Zscores$Zscores.ZsPlus,
@@ -645,14 +645,14 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
 
     NEAModel_temp <- list(randNet=NEAModel_randNet,shuffleLabel=NEAModel_shuffleLabel,RandDistrubution=NEAModel_RandDistrubution)
 
-    Res_randNet <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$randNet,
-                                GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_randNet <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$randNet,
+                                GeneLikelihood = scDNSobject@GeneVariability)
     # Res_randNet$Zscores[c('TP53','TERT','PDGFRA'),]
-    Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$shuffleLabel,
-                                     GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$shuffleLabel,
+                                     GeneLikelihood = scDNSobject@GeneVariability)
     # Res_shuffleLabel$Zscores[c('TP53','TERT','PDGFRA'),]
-    Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel_temp$RandDistrubution,
-                                         GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel_temp$RandDistrubution,
+                                         GeneLikelihood = scDNSobject@GeneVariability)
 
     # Res_RandDistrubution$Zscores[c('TP53','TERT','PDGFRA'),]
     Zs_data <- data.frame(randNet=Res_randNet$Zscores$Zscores.ZsPlus,
@@ -669,15 +669,15 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
     Zscore
   }else{
     # NEAModel_RandDistrubution$ad.dropModel <- NEAModel_ShuffleLabel$ad.dropModel
-    Res_randNet <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel$randNet,
-                                GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_randNet <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel$randNet,
+                                GeneLikelihood = scDNSobject@GeneVariability)
     # Res_randNet$Zscores[c('TP53','TERT','PDGFRA'),]
-    Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel$shuffleLabel,
-                                     GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_shuffleLabel <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel$shuffleLabel,
+                                     GeneLikelihood = scDNSobject@GeneVariability)
     # Res_shuffleLabel$Zscores[c('TP53','TERT','PDGFRA'),]
     # NEAModel$RandDistrubution$ad.dropModel <- NEAModel$shuffleLabel$ad.dropModel
-    Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobjcet@Network, NEAModel = NEAModel$RandDistrubution,
-                                         GeneLikelihood = scDNSobjcet@GeneVariability)
+    Res_RandDistrubution <- getZscore_v2(EdgeScore = scDNSobject@Network, NEAModel = NEAModel$RandDistrubution,
+                                         GeneLikelihood = scDNSobject@GeneVariability)
 
     # Res_RandDistrubution$Zscores[c('TP53','TERT','PDGFRA'),]
     Zs_data <- data.frame(randNet=Res_randNet$Zscores$Zscores.ZsPlus,
@@ -693,12 +693,12 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
                    p_combine=p_combine)
     Zscore
   }
-  scDNSobjcet@NEAModel$ZscoreList <- Zscore
+  scDNSobject@NEAModel$ZscoreList <- Zscore
   Zscore_res <- Res_RandDistrubution$Zscores
   Zscore_res[,colnames(p_combine)] <- p_combine
-  scDNSobjcet@Zscore <- Zscore_res
-  scDNSobjcet@Network <- Res_RandDistrubution$Network
-  scDNSobjcet
+  scDNSobject@Zscore <- Zscore_res
+  scDNSobject@Network <- Res_RandDistrubution$Network
+  scDNSobject
 }
 
 # combine_stouffer <- function(df,
@@ -763,10 +763,10 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
 # set.seed(123)
 # load(file = '/home/rstudio/Projects/scDDG/Application/simulation/iAT2_scDNSob.RData')
 # # iAT2_scDNSob@GroupLabel
-# # TP53_scDNSob2 <- scDNS_2_creatNEAModel_v2(scDNSobjcet = TP53_scDNSob2,n.dropGene = 3000,
+# # TP53_scDNSob2 <- scDNS_2_creatNEAModel_v2(scDNSobject = TP53_scDNSob2,n.dropGene = 3000,
 # #                                         n.randNet = 20000,GroupLabel = TP53_scDNSob2@GroupLabel)
 # # NEAModel <- TP53_scDNSob2@NEAModel
-# iAT2_scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobjcet = iAT2_scDNSob,n.dropGene = 3000,
+# iAT2_scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobject = iAT2_scDNSob,n.dropGene = 3000,
 #                                         n.randNet = 20000,GroupLabel = iAT2_scDNSob@GroupLabel)
 # NEAModel <- iAT2_scDNSob@NEAModel
 #
@@ -786,7 +786,7 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobjcet,reCreatNEA=FALSE,PositiveGene=NULL
 # set.seed(123)
 # # load(file = '/home/rstudio/Projects/scDDG/Application/simulation/iAT2_scDNSob.RData')
 # # # iAT2_scDNSob@GroupLabel
-# TP53_scDNSob2 <- scDNS_2_creatNEAModel_v2(scDNSobjcet = TP53_scDNSob2,n.dropGene = 3000,
+# TP53_scDNSob2 <- scDNS_2_creatNEAModel_v2(scDNSobject = TP53_scDNSob2,n.dropGene = 3000,
 #                                         n.randNet = 20000,GroupLabel = TP53_scDNSob2@GroupLabel)
 #
 # save(TP53_scDNSob2,file = '/home/rstudio/Projects/scDDG/Application/simulation/TP53_scDNSob2_combineP.RData')
