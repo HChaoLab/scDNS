@@ -575,3 +575,47 @@ replace2 <- function(x,RawData,RepData){
   x[!is.na(matchID)]=RepData[matchID[!is.na(matchID)]];
   x
 }
+
+
+#' theme_pretty
+#'
+#' @param fontsize font size.def:10
+#' @param font Helvetica
+#'
+#' @return
+#' @export
+#'
+#' @examples
+theme_pretty <- function(fontsize = 10, font = "Helvetica"){
+  nl <- theme_bw(base_size = fontsize) + theme(panel.grid.major = element_blank(),
+                                               panel.grid.minor = element_blank(),
+                                               axis.text = element_text(colour = "black", family = font),
+                                               legend.key = element_blank(),
+                                               strip.background = element_rect(colour = "black",  fill = "white"))
+  return(nl)
+}
+
+#' theme_pretty_NoBox
+#'
+#'  theme_pretty
+#'
+#' @param fontsize font size.def:10
+#' @param font Helvetica
+#'
+#' @return
+#' @export
+#'
+#' @examples
+theme_pretty_NoBox <- function (fontsize = 10, font = "Helvetica") {
+  nl <- theme_bw(base_size = fontsize) + theme(panel.grid.major = element_blank(),
+                                               panel.grid.minor = element_blank(),
+                                               axis.text = element_text(colour = "black", family = font),
+                                               legend.key = element_blank(),
+                                               strip.background = element_rect(colour = "black",  fill = "white"),
+                                               axis.line.x.top = element_blank(),
+                                               axis.line.y.right = element_blank(),
+                                               rect = element_blank(),
+                                               axis.line = element_line(color = "black", lineend = "square",linewidth = rel(0.5)))
+  return(nl)
+}
+

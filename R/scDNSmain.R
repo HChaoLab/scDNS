@@ -111,7 +111,8 @@ CreatScDNSobject <- function(counts,
                      NEAModel=list(),
                      JDensity_A = matrix(),
                      JDensity_B = matrix(),
-                     uniCase = character())
+                     uniCase = character(),
+                     Other=list())
   scDNSobject
 
 

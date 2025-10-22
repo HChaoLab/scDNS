@@ -16,7 +16,8 @@ scDNSobjClass <- function(){
     JDensity_B = 'matrixORarray',
     uniCase = 'character',
     Zscore = 'data.frame',
-    scZscore = 'matrixORdgCMatrix'
+    scZscore = 'matrixORdgCMatrix',
+    Other = 'list'
   ))
 }
 
@@ -34,11 +35,11 @@ seurat2scDNSObj <- function(sob,imputedAssay ='MAGIC_RNA',GroupBy=NULL,...){
   if(is.null(GroupBy)){
     stop('Please provide cell groups information.')
   }
-  DSP_scDNSob <- CreatScDNSobject(counts = sob@assays$RNA@counts,
+  scDNSob <- CreatScDNSobject(counts = sob@assays$RNA@counts,
                                   data = sob@assays[[imputedAssay]]@data,
                                   Network = scDNSBioNet,
                                   GroupLabel = sob@meta.data[,GroupBy]%>%as.character(),...)
-  DSP_scDNSob
+  scDNSob
 }
 
 
