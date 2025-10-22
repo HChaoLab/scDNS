@@ -24,5 +24,5 @@ scDNS_2_creatNEAModel(
 scDNSobject
 }
 \description{
-scDNS_2_creatNEAModel
+Creates a null model for network enrichment analysis by random sampling of genes and networks.
 }

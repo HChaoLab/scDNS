@@ -193,10 +193,8 @@ plot_diffFC_scDNS_Zscore(Zscores = GEM_PANC1_scDNSob@Zscore,sob = PANC1GEM24H_SO
                          TopGene = NULL,darkOtherGene = T,highlightGene = mitoGene)+theme_pretty(12)
 						 
 ```
- ![My Plot](vignettes/p_Mitochondral_Zs_fc.tiff)  
-
-
-
+ 
+<img src="vignettes/p_Mitochondral_Zs_fc.tiff" width="100%" />
 
 ### 9. Compare network densities for a specific gene
 
@@ -204,7 +202,8 @@ This step examines **gene-level network rewiring** by comparing the local networ
 ``` r
 densityCompare3(GEM_PANC1_scDNSob,Nodes = 'TIMM44',topEdge = 30)
 ```
-![My Plot](vignettes/TIMM_DREVI.tiff)
+<img src="vignettes/TIMM_DREVI.tiff" width="100%" />
+
 ### 10. Visualize single-cell perturbation scores on UMAP
 
 This step maps **gene- or cell-level perturbation scores** onto the UMAP embedding of single cells, allowing visualization of functional heterogeneity:
@@ -222,7 +221,8 @@ PANC1GEM24H_SOB_3$TIMM44_scZs <- abs(GEM_PANC1_scDNSob@scZscore['TIMM44',])
 FeaturePlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',features = 'TIMM44_scZs',label = T)+scale_color_gradientn(name = 'scZs(TIMM44)',colours = Expression_color2())+
   theme_pretty(12)
 ```
- ![My Plot](vignettes/p_GEM_Type_dimplot.tiff) ![My Plot](vignettes/p_scZs_TIMM44_geme_featuplot.tiff)
+<img src="vignettes/p_GEM_Type_dimplot.tiff" width="100%" /> <img src="vignettes/p_scZs_TIMM44_geme_featuplot.tiff" width="100%" />
+
 ---
 
 ## 🧠 Citation
