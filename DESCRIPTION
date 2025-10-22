@@ -1,0 +1,41 @@
+Package: scDNS
+Type: Package
+Title: Characterizing Gene Perturbations in Single Cells via Network Divergence Analysis
+Version: 0.2.0
+Author: Huang Chao
+Maintainer: The package maintainer <huangchao@xjtu.edu.cn>
+Description: We use single-cell transcriptomes to reflect the functional changes of genes under different conditions by characterizing the dynamic changes between genes.
+    Use four spaces when indenting paragraphs within the Description.
+License: The license is under xiaolab.
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    patchwork,
+    ggnewscale,
+    sn,
+    BiocParallel,
+    minpack.lm,
+    stringr,
+    Rfast,
+    infotheo,
+    progress,
+    doSNOW,
+    parallel,
+    tictoc
+Depends: 
+    MatrixGenerics,
+    data.table,
+    BiocGenerics,
+    magrittr,
+    ggplot2,
+    R (>= 2.10),
+    BiocParallel,
+    foreach,
+    Seurat
+RoxygenNote: 7.1.2
+URL: https://github.com/HChaoLab/scDNS
+BugReports: https://github.com/HChaoLab/scDNS/issues
