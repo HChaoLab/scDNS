@@ -9,17 +9,18 @@ scDNS is a computational framework that quantifies gene-specific functional pert
 ## Installation
 
 You can install the development version of scDNS like so:
-
+```r
 devtools::install_github('xiaolab-xjtu/scDNS')
+```
 
 ``` r
 # FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
 ```
 
-## Example
+## An example for scDNS
 
 This is a basic example which shows you how to solve a common problem:
-### 01 load data and preprocessing
+### Load data and preprocessing
 ``` r
 library(scDNS)
 library(patchwork)
@@ -50,7 +51,7 @@ if (!'MAGIC_RNA'%in%names(sob@assays)){
 }
 ```
 
-### 1 creat scDNS object
+### 1 Creat scDNS object
 ``` r
 scDNSob <- seurat2scDNSObj(sob = sob,
                            GroupBy = group_col,
@@ -59,25 +60,25 @@ scDNSob <- seurat2scDNSObj(sob = sob,
                            loop.size=6000)
 ```
 						   
-#### 2 calculate network divergence
+#### 2 Calculate network divergence
 ``` r
 scDNSob <- scDNS_1_CalDivs(scDNSob)
 ```
 
-#### 3 creat network ensmeble modle to combine  network divergence
+#### 3 Creat network ensmeble modle to combine  network divergence
 
 ``` r
 scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobjcet = scDNSob,
                                     n.randNet = 20000)
 ```
-#### 4 construct context-adaptive GINs using a GAT based model
+#### 4 Construct context-adaptive GINs using a GAT based model
 
-#### 5 calculate gene perpturbation score (Gene Z-score)
+#### 5 Calculate gene perpturbation score (Gene Z-score)
 ``` r
 scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobjcet = scDNSob,
                                     n.randNet = 20000)
 ```
-#### 6 calculate single cell perptrubation score
+#### 6 Calculate single cell perptrubation score
 ``` r
 scDNSob <- scDNS_4_scContribution(scDNSob)
 ```
