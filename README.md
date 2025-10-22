@@ -10,7 +10,7 @@ scDNS is a computational framework that quantifies gene-specific functional pert
 
 You can install the development version of scDNS like so:
 
-
+devtools::install_github('xiaolab-xjtu/scDNS')
 
 ``` r
 # FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
@@ -64,20 +64,20 @@ scDNSob <- seurat2scDNSObj(sob = sob,
 scDNSob <- scDNS_1_CalDivs(scDNSob)
 ```
 
-# 3 creat network ensmeble modle to combine  network divergence
+#### 3 creat network ensmeble modle to combine  network divergence
 
 ``` r
 scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobjcet = scDNSob,
                                     n.randNet = 20000)
 ```
-# 4 construct context-adaptive GINs 
+#### 4 construct context-adaptive GINs using a GAT based model
 
-# 5 calculate gene perpturbation score (Gene Z-score)
+#### 5 calculate gene perpturbation score (Gene Z-score)
 ``` r
 scDNSob <- scDNS_2_creatNEAModel_v2(scDNSobjcet = scDNSob,
                                     n.randNet = 20000)
 ```
-# 6 calculate single cell perptrubation score
+#### 6 calculate single cell perptrubation score
 ``` r
 scDNSob <- scDNS_4_scContribution(scDNSob)
 ```
