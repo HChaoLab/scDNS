@@ -193,8 +193,8 @@ plot_diffFC_scDNS_Zscore(Zscores = GEM_PANC1_scDNSob@Zscore,sob = PANC1GEM24H_SO
                          TopGene = NULL,darkOtherGene = T,highlightGene = mitoGene)+theme_pretty(12)
 						 
 ```
- 
-<img src="vignettes/p_Mitochondral_Zs_fc.tiff" width="100%" />
+ !['xxx'](vignettes/p_Mitochondral_Zs_fc.png)
+
 
 ### 9. Compare network densities for a specific gene
 
@@ -222,8 +222,7 @@ PANC1GEM24H_SOB_3$TIMM44_scZs <- abs(GEM_PANC1_scDNSob@scZscore['TIMM44',])
 FeaturePlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',features = 'TIMM44_scZs',label = T)+scale_color_gradientn(name = 'scZs(TIMM44)',colours = Expression_color2())+
   theme_pretty(12)
 ```
-<img src="vignettes/p_GEM_Type_dimplot.tiff" width="100%" /> <img src="vignettes/p_scZs_TIMM44_geme_featuplot.tiff" width="100%" />
-
+!['xxx'](vignettes/p_GEM_Type_dimplot.png) !['xxx'](vignettes/p_scZs_TIMM44_geme_featuplot.png)
 ---
 
 ## 🧠 Citation
