@@ -15,3 +15,4 @@ getDoubleDropout(Network, counts)
 \description{
 getDoubleDropout
 }
+\keyword{internal}

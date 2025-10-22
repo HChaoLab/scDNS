@@ -16,6 +16,7 @@ CreatScDNSobject(
   n.coarse = 20,
   ds.method = c("knn", "kde")[1],
   divergence = c("jsd", "kld")[1],
+  noiseSd = 0.01,
   h = 1,
   rb.jsd = F,
   Div_weight = sqrt(as.vector(matrix(1:n.coarse, nrow = n.coarse, ncol = n.coarse) *

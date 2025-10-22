@@ -5,14 +5,14 @@
 \title{scDNS_2_creatNEAModel}
 \usage{
 scDNS_2_creatNEAModel(
-  scDNSobjcet,
+  scDNSobject,
   n.dropGene = NULL,
   n.randNet = NULL,
   sdBias = NULL
 )
 }
 \arguments{
-\item{scDNSobjcet}{scDNSobjcet}
+\item{scDNSobject}{scDNSobject}
 
 \item{n.dropGene}{Integer, number of cells sampled for model building (def:3000)}
 
@@ -21,7 +21,7 @@ scDNS_2_creatNEAModel(
 \item{sdBias}{Numeric value, bias coefficient used to penalize low degree genes(>=1) (def:1.1)}
 }
 \value{
-scDNSobjcet
+scDNSobject
 }
 \description{
 scDNS_2_creatNEAModel

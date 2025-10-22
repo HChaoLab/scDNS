@@ -17,3 +17,4 @@ NormalizeToOne_bygorup(ColData, label)
 NormalizeToOne_bygorup
 Rescale each value of the conditional density estimate by its column-maximum
 }
+\keyword{internal}

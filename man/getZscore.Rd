@@ -19,3 +19,4 @@ getZscore(EdgeScore, NEAModel, Likelihood)
 \description{
 getZscore
 }
+\keyword{internal}

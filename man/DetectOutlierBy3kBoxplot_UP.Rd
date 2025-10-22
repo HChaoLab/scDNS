@@ -19,3 +19,4 @@ DetectOutlierBy3kBoxplot_UP(m, zero.rm = TRUE)
 DetectOutlierBy3kBoxplot_UP
 Detect outliers
 }
+\keyword{internal}

@@ -4,10 +4,16 @@
 \alias{scDNS_4_scContribution}
 \title{scDNS_4_scContribution}
 \usage{
-scDNS_4_scContribution(scDNSobjcet, topGene = 100, sigGene = NULL, q.th = 0.01)
+scDNS_4_scContribution(
+  scDNSobject,
+  topGene = 100,
+  sigGene = NULL,
+  q.th = 0.01,
+  ...
+)
 }
 \arguments{
-\item{scDNSobjcet}{scDNSobjcet}
+\item{scDNSobject}{scDNSobject}
 
 \item{topGene}{Integer value, representing the number of top significant genes(def:100).When sigGene is not NULL, topGene is invalid.}
 
@@ -16,7 +22,7 @@ scDNS_4_scContribution(scDNSobjcet, topGene = 100, sigGene = NULL, q.th = 0.01)
 \item{q.th}{Adjusted p-value threshold}
 }
 \value{
-scDNSobjcet
+scDNSobject
 }
 \description{
 scDNS_4_scContribution

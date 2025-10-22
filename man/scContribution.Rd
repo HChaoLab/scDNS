@@ -4,10 +4,10 @@
 \alias{scContribution}
 \title{scContribution}
 \usage{
-scContribution(scDNSobjcet, nx = 20, rmZero = F, topGene = 100, sigGene = NULL)
+scContribution(scDNSobject, nx = 20, rmZero = F, topGene = 100, sigGene = NULL)
 }
 \arguments{
-\item{scDNSobjcet}{scDNSobjcet}
+\item{scDNSobject}{scDNSobject}
 
 \item{nx}{An integer value representing the number of grid (def:20)}
 
@@ -23,3 +23,4 @@ scContribution(scDNSobjcet, nx = 20, rmZero = F, topGene = 100, sigGene = NULL)
 \description{
 scContribution
 }
+\keyword{internal}

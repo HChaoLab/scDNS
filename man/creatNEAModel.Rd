@@ -20,6 +20,7 @@ creatNEAModel(
   CoarseGrain = TRUE,
   loop.size = 3000,
   parallel.sz = 10,
+  noiseSd = 0.01,
   verbose = TRUE,
   exclude.zero = FALSE,
   NoiseRemove = TRUE,
@@ -84,3 +85,4 @@ creatNEAModel(
 \description{
 creatNEAModel
 }
+\keyword{internal}

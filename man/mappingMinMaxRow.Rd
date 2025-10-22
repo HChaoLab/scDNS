@@ -26,3 +26,4 @@ maping each row of data to between minD and maxD
 \examples{
 mappingMinMaxRow(matrix(0:24,5),minD=1,maxD=60,rmZero = TRUE)
 }
+\keyword{internal}

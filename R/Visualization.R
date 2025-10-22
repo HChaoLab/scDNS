@@ -168,7 +168,8 @@ densityCompare2 <- function(netRes,Nodes,EdgeID=NULL,interpolate=FALSE,filp=FALS
 }
 
 
-#' densityCompare3
+#' Visualizing Conditional Density Distributions Across Biological Contexts
+#'
 #' visualize and compare the conditional density distributions of gene pairs (edges) between two different biological contexts,
 #' likely representing a control (Context A) and a stimulation or perturbed state (Context B)
 #' @param scDNSobject object of scDNS
@@ -280,7 +281,8 @@ densityCompare3 <- function (scDNSobject, Nodes, topEdge=10,
   plist_patch
 }
 
-#' plot_diffFC_scDNS_Zscore
+#' Volcano Plot of Log2 Fold-Change versus scDNS Z-score
+#'
 #' plot_diffFC_scDNS_Zscore is designed to generate a Volcano-like plot that visualizes the relationship between gene expression fold-change (Log2 FC) and a network stability score (Z-score) derived from single-cell Differential Network Stability (scDNS) analysis.
 #' @param Zscores A data frame or object containing the gene-level network stability Z-scores (calculated by scDNS)
 #' @param scDNSob scDNS object
@@ -367,12 +369,12 @@ plot_diffFC_scDNS_Zscore <- function(Zscores,
       Zscores$color[!is.na(Zscores$label)|Zscores$Gene%in%highlightGene] <- 'black'
       ggplot(Zscores,aes(avg_log2FC,Zscore,color=color,size=label0))+geom_point()+theme_pretty(12)+
         geom_hline(yintercept = Zs_th,lty=2,color='grey')+geom_vline(xintercept = c(-fc_th,fc_th),lty=2,color='grey')+
-        geom_text_repel(aes(label=label),color='black', min.segment.length = 0,      # ✅ Draw leader lines for all points.
+        geom_text_repel(aes(label=label),color='black', min.segment.length = 0,      # Draw leader lines for all points.
                         force_pull = 2,max.overlaps = 100,size=TextSize)+scale_color_identity()+labs(x='Log2 FC',y='Zscore')+scale_size_identity()
     }else{
       ggplot(Zscores,aes(avg_log2FC,Zscore,color=color))+geom_point(size=0.5)+theme_pretty(12)+
         geom_hline(yintercept = Zs_th,lty=2,color='grey')+geom_vline(xintercept = c(-fc_th,fc_th),lty=2,color='grey')+
-        geom_text_repel(aes(label=label),color='black', min.segment.length = 0,      # ✅ 让Draw leader lines for all points.
+        geom_text_repel(aes(label=label),color='black', min.segment.length = 0,      # Draw leader lines for all points.
                         force_pull = 2,max.overlaps = 100,size=TextSize)+scale_color_identity()+labs(x='Log2 FC',y='Zscore')
     }
 
@@ -392,13 +394,13 @@ plot_diffFC_scDNS_Zscore <- function(Zscores,
 fit_conditional_curve <- function(peaks) {
   library(dplyr)
 
-  # Step 1: 提取条件密度的峰值点
+  # Step 1: peak value of density
   # peaks <- df %>%
   #   group_by(x) %>%
   #   slice_max(order_by = z, n = 1, with_ties = FALSE) %>%
   #   ungroup()
 
-  # 定义一个计算R²的函数
+  # R2 functions
   calc_r2 <- function(obs, pred) {
     ss_res <- sum((obs - pred)^2)
     ss_tot <- sum((obs - mean(obs))^2)
@@ -467,7 +469,7 @@ fit_conditional_curve <- function(peaks) {
     predict = function(newx) predict(fit_loess, newdata = data.frame(x=newx))
   )
 
-  # ---- 找到最佳模型 ----
+  # ---- find the best model ----
   r2_values <- sapply(results, function(m) m$r2)
   best_model <- names(which.max(r2_values))
 
@@ -493,17 +495,17 @@ estimate_sigmoid_start <- function(peaks){
   A <- y_max - y_min
   B <- y_min
 
-  # 找到 y 达到一半高度的位置
+  #
   half_y <- B + A/2
   x0 <- peaks$x[which.min(abs(peaks$y - half_y))]
 
-  # 粗略估计斜率 k
+  # estimation of k
   dy <- diff(peaks$y)
   dx <- diff(peaks$x)
   slopes <- dy/dx
   k <- max(slopes) / A  # 归一化斜率
 
-  # 避免 k=0
+  # avoid k=0
   if(k == 0) k <- 0.1
 
   list(A=A, B=B, x0=x0, k=k)
@@ -534,7 +536,7 @@ estimate_double_sigmoid_start <- function(peaks){
     x02 <- x[pos_peaks[ceiling(length(pos_peaks)/2)]]
   }
 
-  # 保证在 x 范围内
+  #
   x01 <- min(max(x01, min(x)), max(x))
   x02 <- min(max(x02, min(x)), max(x))
 

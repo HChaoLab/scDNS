@@ -4,13 +4,13 @@
 \alias{scDNS_3_GeneZscore}
 \title{scDNS_3_GeneZscore}
 \usage{
-scDNS_3_GeneZscore(scDNSobjcet)
+scDNS_3_GeneZscore(scDNSobject)
 }
 \arguments{
-\item{scDNSobjcet}{scDNSobjcet}
+\item{scDNSobject}{scDNSobject}
 }
 \value{
-scDNSobjcet
+scDNSobject
 }
 \description{
 scDNS_3_GeneZscore

@@ -17,3 +17,4 @@ preFilterNet(BioNet, CountData)
 \description{
 preFilterNet
 }
+\keyword{internal}

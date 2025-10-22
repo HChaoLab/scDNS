@@ -19,3 +19,4 @@ SmoothOutLier_UP(mt, zero.rm = TRUE, percentile = 0.99)
 \description{
 SmoothOutLier_UP
 }
+\keyword{internal}

@@ -1,5 +1,6 @@
 #' CreatScDNSobject
 #'
+#' creat scDNS object
 #' @param counts a matrix represents gene count expression, with rows being genes and columns being cells
 #' @param data a matrix represents gene normalized expression, with rows being genes and columns being cells.
 #' @param Network a two-column data frame represents the biological network
@@ -118,9 +119,11 @@ CreatScDNSobject <- function(counts,
 
 
 
-#' scDNS_1_CalDivs
+#' Network with divergence scores for each edge
 #'
-#' @param scDNSobject scDNSobject
+#' Computes Jensen-Shannon or Kullback-Leibler divergence between conditional density distributions of network edges (gene pairs) in two biological contexts.
+#'
+#' @param scDNSobject scDNS object
 #' @param k a numerical value represents the kth (def: 10) nearest neighbor point
 #' @param n.grid An integer value representing the number of grid (def:60) used to calculate the joint probability density
 #' @param n.coarse An integer value representing the number of grid (def:20) after coarse-graining
@@ -217,6 +220,8 @@ scDNS_1_CalDivs <- function(scDNSobject,
 }
 
 #' scDNS_2_creatNEAModel
+#'
+#' Creates a null model for network enrichment analysis by random sampling of genes and networks.
 #'
 #' @param scDNSobject scDNSobject
 #' @param n.dropGene Integer, number of cells sampled for model building (def:3000)

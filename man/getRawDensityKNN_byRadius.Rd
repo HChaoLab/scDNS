@@ -17,3 +17,4 @@ getRawDensityKNN_byRadius(Radius_md, k)
 getRawDensityKNN_byRadius
 k/(π*r^2)
 }
+\keyword{internal}

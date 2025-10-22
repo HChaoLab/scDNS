@@ -16,6 +16,7 @@ getKLD_cKLDnetwork(
   ds.method = c("knn", "kde"),
   divergence = c("jsd", "kld"),
   h = 1,
+  noiseSd = 0.01,
   loop.size = 3000,
   parallel.sz = 10,
   verbose = TRUE,

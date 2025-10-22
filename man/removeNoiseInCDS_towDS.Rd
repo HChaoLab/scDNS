@@ -30,3 +30,4 @@ removeNoiseInCDS_towDS
 \examples{
 
 }
+\keyword{internal}

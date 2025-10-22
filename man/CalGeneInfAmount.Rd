@@ -19,3 +19,4 @@ Returns the informative ability of each gene, in the range 0-1. The closer to 1,
 CalGeneInfAmount
 Evaluate the ability of genes to respond to valid information based on the standard deviation of gene expression
 }
+\keyword{internal}

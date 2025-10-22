@@ -2,7 +2,7 @@
 % Please edit documentation in R/NetDivergence.R
 \name{rmTechnologyNoise}
 \alias{rmTechnologyNoise}
-\title{Title}
+\title{rmTechnologyNoise}
 \usage{
 rmTechnologyNoise(DensityD, min.pt = 0.7, min.density = 10/((10)^2 * pi) * 9)
 }
@@ -13,5 +13,6 @@ rmTechnologyNoise(DensityD, min.pt = 0.7, min.density = 10/((10)^2 * pi) * 9)
 
 }
 \description{
-Title
+rmTechnologyNoise
 }
+\keyword{internal}

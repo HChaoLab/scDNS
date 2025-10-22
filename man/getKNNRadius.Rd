@@ -23,3 +23,4 @@ getKNNRadius(ExpDataDT, Network, GridData, k = 10)
 getKNNRadius
 Calculation of distance radius based on KNN method.
 }
+\keyword{internal}

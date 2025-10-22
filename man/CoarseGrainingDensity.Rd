@@ -17,3 +17,4 @@ CoarseGrainingDensity(rawDensity, n.coarse, n.grid = NULL)
 \description{
 CoarseGrainingDensity
 }
+\keyword{internal}

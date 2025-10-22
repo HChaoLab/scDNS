@@ -5,7 +5,7 @@
 \title{scDNS_1_CalDivs}
 \usage{
 scDNS_1_CalDivs(
-  scDNSobjcet,
+  scDNSobject,
   k = NULL,
   n.grid = NULL,
   NoiseRemove = NULL,
@@ -14,6 +14,7 @@ scDNS_1_CalDivs(
   ds.method = NULL,
   divergence = NULL,
   h = NULL,
+  noiseSd = NULL,
   loop.size = NULL,
   parallel.sz = NULL,
   verbose = NULL,
@@ -23,7 +24,7 @@ scDNS_1_CalDivs(
 )
 }
 \arguments{
-\item{scDNSobjcet}{scDNSobjcet}
+\item{scDNSobject}{scDNSobject}
 
 \item{k}{a numerical value represents the kth (def: 10) nearest neighbor point}
 
@@ -54,7 +55,7 @@ scDNS_1_CalDivs(
 \item{parllelModel}{}
 }
 \value{
-scDNSobjcet
+scDNSobject
 }
 \description{
 scDNS_1_CalDivs

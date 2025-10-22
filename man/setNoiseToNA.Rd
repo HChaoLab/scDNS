@@ -2,7 +2,7 @@
 % Please edit documentation in R/NetDivergence.R
 \name{setNoiseToNA}
 \alias{setNoiseToNA}
-\title{Title}
+\title{setNoiseToNA}
 \usage{
 setNoiseToNA(x, noiseIndex)
 }
@@ -13,6 +13,6 @@ setNoiseToNA(x, noiseIndex)
 
 }
 \description{
-Title
+setNoiseToNA
 }
 \keyword{internal}
