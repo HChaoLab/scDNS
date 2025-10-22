@@ -202,7 +202,8 @@ This step examines **gene-level network rewiring** by comparing the local networ
 ``` r
 densityCompare3(GEM_PANC1_scDNSob,Nodes = 'TIMM44',topEdge = 30)
 ```
-<img src="vignettes/TIMM_DREVI.tiff" width="100%" />
+
+!['xxx'](vignettes/TIMM_DREVI.png)
 
 ### 10. Visualize single-cell perturbation scores on UMAP
 
