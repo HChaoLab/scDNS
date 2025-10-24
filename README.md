@@ -7,21 +7,36 @@ By leveraging **information-theoretic divergence**, scDNS systematically compare
 
 ## 🧩 Installation
 
-Install the development version of **scDNS** from GitHub using:
 
-```r
-if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
-devtools::install_github("xiaolab-xjtu/scDNS")
-```
 ## Install dependency packages
 install Rmagic package
 ```r
-# If devtools is not installed
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+# Creat scDNS Python environment
+if (!requireNamespace('reticulate', quietly = TRUE)) install.packages('reticulate')
+
+if (!dir.exists(reticulate::miniconda_path())) {
+  message("Miniconda not found. Installing miniconda...")
+  reticulate::install_miniconda()  # install miniconda
+} else {
+  message("Miniconda is already installed.")
+}
+
+reticulate::conda_create("scDNS", python_version = "3.8")
+reticulate::use_condaenv("scDNS", required = TRUE)
+
+# Install MAGIC Python package
 if (!requireNamespace("Rmagic", quietly = TRUE)) devtools::install_github('cran/Rmagic')
-if (!requireNamespace('reticulate', quietly = TRUE)) install.packages('reticulate)
-devtools::install_github('cran/Rmagic')
-reticulate::use_condaenv(condaenv = 'r-reticulate')
-reticulate::conda_install(envname = 'r-reticulate',packages = 'magic-impute',pip = TRUE)
+reticulate::conda_install(envname = "scDNS", packages = "magic-impute", pip = TRUE)
+Rmagic::pymagic_is_available() # test whether pymagic is available
+
+```
+Install the development version of **scDNS** from GitHub using:
+
+```r
+# If devtools is not installed
+
+devtools::install_github("xiaolab-xjtu/scDNS")
 ```
 ---
 
@@ -41,7 +56,7 @@ library(Seurat)
 library(Rmagic)
 
 # Activate Python environment
-use_condaenv("r-reticulate")
+use_condaenv("scDNS")
 
 # Increase global object size limit
 options(future.globals.maxSize = 2 * 1024^3)
@@ -58,7 +73,7 @@ gc()
 **Impute gene expression using MAGIC if not already available**
 
 ``` r
-
+group_col <- "Type"       # experimental condition
 if (!"MAGIC_RNA" %in% names(sob@assays)) {
   sob <- Magic4MultipleData(sob, split.by = group_col)
 }
@@ -69,14 +84,12 @@ if (!"MAGIC_RNA" %in% names(sob@assays)) {
 ### 2. Create a `scDNS` object
 Creat scDNS object from seurat object
 ```r
-DefaultAssay(sob) <- "RNA"
-group_col <- "Type"       # experimental condition
 GEM_PANC1_scDNSob <- seurat2scDNSObj(
   sob = sob,
   GroupBy = group_col,
   imputedAssay = "MAGIC_RNA",
-  parallel.sz = 10,
-  loop.size = 6000
+  parallel.sz = 4, # number of parallel processes (adjust based on available CPU cores)
+  loop.size = 6000 # number of gene-gene interactions processed per parallel core 
 )
 ```
 Alternatively, we can create a scDNS object from a counts matrix and an imputed gene expression matrix.
@@ -84,9 +97,12 @@ Alternatively, we can create a scDNS object from a counts matrix and an imputed 
 
 CreatScDNSobject(
   counts = counts,
-  data = imputedExp,
+  data = imputedExp,	
   Network = NULL, # If no network is provided, the internal default network will be loaded.
-  GroupLabel = group_vector) # group_vector is a vector indicating cell groups, e.g., c('g1','g1','g2','g2')
+  GroupLabel = group_vector,# group_vector is a vector indicating cell groups, e.g., c('g1','g1','g2','g2')
+  parallel.sz = 4, # number of parallel processes (adjust based on available CPU cores)
+  loop.size = 6000 # number of gene-gene interactions processed per parallel core 
+  ) 
 
 ```
 ---
@@ -118,7 +134,7 @@ This step builds **context-adaptive gene interaction networks (GINs)** using a *
 * Use **AttnEdgeMiner** for multi-cell-type datasets to accurately capture condition-specific interactions.
 * For single-cell-type datasets, **DREMI-based filtering** is usually sufficient and simpler.
 
-#### 5.1 Filter netowrk by ==AttnEdgeMiner== prediction
+#### 5.1 Filter netowrk by **AttnEdgeMiner** prediction
 ##### 5.1.1 Prepare inputs for the GAT model
 This function generates the required input files for the GAT model, including network structures, cell group labels, and marker genes for feature embedding.
 
@@ -147,7 +163,7 @@ Reference: [AttnEdgeMiner GitHub](https://github.com/yuhan1li/AttnEdgeMiner/tree
 GEM_PANC1_scDNSob <- filterNetowrkFromGAT(GEM_PANC1_scDNSob,GAT_outNet='./data/attention_layer1_epoch1000_wide_confidence.csv')
 ```
 
-#### 5.2 Filter netowrk by ==DREMI== prediction
+#### 5.2 Filter netowrk by **DREMI**
 For datasets where AttnEdgeMiner is not used, gene interactions with non-significant DREMI correlations can be removed directly:
 ``` r
 GEM_PANC1_scDNSob <- filterNetowrkFromDREMI(GEM_PANC1_scDNSob,rmP=0.01)
@@ -200,7 +216,7 @@ plot_diffFC_scDNS_Zscore(Zscores = GEM_PANC1_scDNSob@Zscore,sob = PANC1GEM24H_SO
 
 This step examines **gene-level network rewiring** by comparing the local network density of a specific node. For example, the `densityCompare3` function can be used to explore TIMM44:
 ``` r
-densityCompare3(GEM_PANC1_scDNSob,Nodes = 'TIMM44',topEdge = 30)
+densityCompare3(GEM_PANC1_scDNSob,Nodes = 'TIMM44',topEdge = 10)
 ```
 
 !['xxx'](vignettes/TIMM_DREVI.png)
@@ -222,7 +238,8 @@ PANC1GEM24H_SOB_3$TIMM44_scZs <- abs(GEM_PANC1_scDNSob@scZscore['TIMM44',])
 FeaturePlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',features = 'TIMM44_scZs',label = T)+scale_color_gradientn(name = 'scZs(TIMM44)',colours = Expression_color2())+
   theme_pretty(12)
 ```
-!['xxx'](vignettes/p_GEM_Type_dimplot.png) !['xxx'](vignettes/p_scZs_TIMM44_geme_featuplot.png)
+!['xxx'](vignettes/p_GEM_Type_dimplot.png)!['xxx'](vignettes/p_scZs_TIMM44_geme_featuplot.png)
+
 ---
 
 ## 🧠 Citation

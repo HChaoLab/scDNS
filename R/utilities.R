@@ -579,7 +579,7 @@ replace2 <- function(x,RawData,RepData){
 
 #' theme_pretty
 #'
-#' @param fontsize font size.def:10
+#' @param fontsize font size. def:10
 #' @param font Helvetica
 #'
 #' @return

@@ -16,7 +16,7 @@ scDNS_2_creatNEAModel(
 
 \item{n.dropGene}{Integer, number of cells sampled for model building (def:3000)}
 
-\item{n.randNet}{Integer, number of cells sampled for model building (def:3000)}
+\item{n.randNet}{Integer, number of cells sampled for model building (def:20000)}
 
 \item{sdBias}{Numeric value, bias coefficient used to penalize low degree genes(>=1) (def:1.1)}
 }

@@ -7,7 +7,7 @@
 theme_pretty(fontsize = 10, font = "Helvetica")
 }
 \arguments{
-\item{fontsize}{font size.def:10}
+\item{fontsize}{font size. def:10}
 
 \item{font}{Helvetica}
 }

@@ -226,30 +226,19 @@ getRawScore.Mpl<-function(net,Div,cDiv_D1,cDiv_D2){
   Rawdata
 }
 
-ad.NetRScore3 <- function(netScore,DivFit,cDivFit){
-  Pchi.Div=toChiSquareX(netScore$Div,netScore$npoint_ds,DivFit)
-  Pchi.cDiv_D1=toChiSquareX(netScore$cDiv_D1,netScore$npoint_ds,cDivFit)
-  Pchi.cDiv_D2=toChiSquareX(netScore$cDiv_D2,netScore$npoint_ds,cDivFit)
-  Pchi.Div = addLabel2Colnames(Pchi.Div,label = 'Div.',before = TRUE)
-  Pchi.cDiv_D1 = addLabel2Colnames(Pchi.cDiv_D1,label = 'cDiv_D1.',before = TRUE)
-  Pchi.cDiv_D2 = addLabel2Colnames(Pchi.cDiv_D2,label = 'cDiv_D2.',before = TRUE)
-  Pchi = cbind(Pchi.Div,Pchi.cDiv_D1,Pchi.cDiv_D2)
-  netScore[,colnames(Pchi)] <- Pchi
-  netScore
-}
 
-toChiSquareX <- function(rs,bias,DistrbutionList){
-  Pvalues <-  rs
-  uniBias <- unique(bias)
-  Num_Model <- names(DistrbutionList)
-  for(i in 1:length(uniBias)){
-    ind=getCloseseData(data = as.numeric(Num_Model),uniBias[i],returnIndex = T)
-    Pvalues[bias==uniBias[i]] = DistrbutionList[[ind]]$cal_Pvalue(rs[bias==uniBias[i]],
-                                                                  ParmetersInput = DistrbutionList[[ind]]$ParmetersInput)$Pvalues
-  }
-
-  Pvalues[Pvalues==0]=1e-312
-  chiSquare = sqrt(-log10(Pvalues))
-  data.frame(Pvalues=Pvalues,chiSquare=chiSquare)
-}
+# toChiSquareX <- function(rs,bias,DistrbutionList){
+#   Pvalues <-  rs
+#   uniBias <- unique(bias)
+#   Num_Model <- names(DistrbutionList)
+#   for(i in 1:length(uniBias)){
+#     ind=getCloseseData(data = as.numeric(Num_Model),uniBias[i],returnIndex = T)
+#     Pvalues[bias==uniBias[i]] = DistrbutionList[[ind]]$cal_Pvalue(rs[bias==uniBias[i]],
+#                                                                   ParmetersInput = DistrbutionList[[ind]]$ParmetersInput)$Pvalues
+#   }
+#
+#   Pvalues[Pvalues==0]=1e-312
+#   chiSquare = sqrt(-log10(Pvalues))
+#   data.frame(Pvalues=Pvalues,chiSquare=chiSquare)
+# }
 

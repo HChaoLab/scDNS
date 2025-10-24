@@ -226,7 +226,7 @@ scDNS_1_CalDivs <- function(scDNSobject,
 #'
 #' @param scDNSobject scDNSobject
 #' @param n.dropGene Integer, number of cells sampled for model building (def:3000)
-#' @param n.randNet Integer, number of cells sampled for model building (def:3000)
+#' @param n.randNet Integer, number of cells sampled for model building (def:20000)
 #' @param sdBias Numeric value, bias coefficient used to penalize low degree genes(>=1) (def:1.1)
 #'
 #' @return
@@ -243,12 +243,6 @@ scDNS_2_creatNEAModel <- function(scDNSobject,
   if(!is.null(n.randNet)){scDNSobject@NEA.Parameters$n.randNet=n.randNet}
   if(!is.null(sdBias)){scDNSobject@NEA.Parameters$sdBias=sdBias}
 
-
-  # NEA.Parameters <- list(do.impute = FALSE,
-  #                        n.dropGene = n.dropGene,
-  #                        n.randNet = n.randNet,
-  #                        sdBias = sdBias)
-  # scDNSobject@NEA.Parameters <- NEA.Parameters
   NEAModel <- creatNEAModel(counts=scDNSobject@counts,
                             ExpData=scDNSobject@data,
                             do.impute = scDNSobject@NEA.Parameters$do.impute,
