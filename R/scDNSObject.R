@@ -31,16 +31,46 @@ setMethod("show", "scDNS",
           }
 )
 
-seurat2scDNSObj <- function(sob,imputedAssay ='MAGIC_RNA',GroupBy=NULL,...){
-  if(is.null(GroupBy)){
-    stop('Please provide cell groups information.')
+seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...) {
+  # Check if GroupBy argument is provided
+  if (is.null(GroupBy)) {
+    stop("Please provide cell group information via the 'GroupBy' parameter.")
   }
-  scDNSob <- CreatScDNSobject(counts = sob@assays$RNA@counts,
-                                  data = sob@assays[[imputedAssay]]@data,
-                                  Network = scDNSBioNet,
-                                  GroupLabel = sob@meta.data[,GroupBy]%>%as.character(),...)
-  scDNSob
+
+  # Detect Seurat major version (4 or 5)
+
+  # Extract raw counts matrix
+  counts_mat <- Seurat::GetAssayData(sob, assay = "RNA", slot = "counts")
+
+  # Extract imputed expression matrix
+  if (imputedAssay %in% names(sob@assays)) {
+    if (seurat_version >= 5) {
+      data_mat <- Seurat::GetAssayData(sob, assay = imputedAssay, slot = "data")
+    } else {
+      data_mat <- sob@assays[[imputedAssay]]@data
+    }
+  } else {
+    stop(paste0("Assay '", imputedAssay, "' not found in the Seurat object."))
+  }
+
+  # Extract group labels from meta.data
+  if (!GroupBy %in% colnames(sob@meta.data)) {
+    stop(paste0("Column '", GroupBy, "' not found in sob@meta.data."))
+  }
+  group_label <- as.character(sob@meta.data[[GroupBy]])
+
+  # Construct scDNS object
+  scDNSob <- CreatScDNSobject(
+    counts = counts_mat,
+    data = data_mat,
+    Network = scDNSBioNet,
+    GroupLabel = group_label,
+    ...
+  )
+
+  return(scDNSob)
 }
+
 
 
 setMethod("colnames", signature(x = "scDNS"), function(x) {

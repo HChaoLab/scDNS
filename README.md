@@ -52,7 +52,7 @@ library(scDNS)
 library(patchwork)
 library(dplyr)
 library(reticulate)
-library(Seurat)
+library(Seurat) # v 4.3.0
 library(Rmagic)
 
 # Activate Python environment
@@ -134,7 +134,7 @@ This step builds **context-adaptive gene interaction networks (GINs)** using a *
 * Use **AttnEdgeMiner** for multi-cell-type datasets to accurately capture condition-specific interactions.
 * For single-cell-type datasets, **DREMI-based filtering** is usually sufficient and simpler.
 
-#### 5.1 Filter netowrk by **AttnEdgeMiner** prediction
+#### 5.1 Filter netowrk by `AttnEdgeMiner` prediction
 ##### 5.1.1 Prepare inputs for the GAT model
 This function generates the required input files for the GAT model, including network structures, cell group labels, and marker genes for feature embedding.
 
@@ -163,7 +163,7 @@ Reference: [AttnEdgeMiner GitHub](https://github.com/yuhan1li/AttnEdgeMiner/tree
 GEM_PANC1_scDNSob <- filterNetowrkFromGAT(GEM_PANC1_scDNSob,GAT_outNet='./data/attention_layer1_epoch1000_wide_confidence.csv')
 ```
 
-#### 5.2 Filter netowrk by **DREMI**
+#### 5.2 Filter netowrk by `DREMI`
 For datasets where AttnEdgeMiner is not used, gene interactions with non-significant DREMI correlations can be removed directly:
 ``` r
 GEM_PANC1_scDNSob <- filterNetowrkFromDREMI(GEM_PANC1_scDNSob,rmP=0.01)
