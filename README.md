@@ -52,7 +52,7 @@ library(scDNS)
 library(patchwork)
 library(dplyr)
 library(reticulate)
-library(Seurat) # v 4.3.0
+library(Seurat) 
 library(Rmagic)
 
 # Activate Python environment
@@ -62,7 +62,7 @@ use_condaenv("scDNS")
 options(future.globals.maxSize = 2 * 1024^3)
 
 # Load example Seurat object
-load(file = "./GEM24h_scDNS.RData")
+load(file = "./PANC1GEM24H_SOB_3.RData")
 
 # Remove non-expressed genes
 PANC1GEM24H_SOB_3 <- rmNotExpressedGene(PANC1GEM24H_SOB_3)

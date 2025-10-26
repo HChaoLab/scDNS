@@ -44,11 +44,7 @@ seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...
 
   # Extract imputed expression matrix
   if (imputedAssay %in% names(sob@assays)) {
-    if (seurat_version >= 5) {
-      data_mat <- Seurat::GetAssayData(sob, assay = imputedAssay, slot = "data")
-    } else {
-      data_mat <- sob@assays[[imputedAssay]]@data
-    }
+    data_mat <- Seurat::GetAssayData(sob, assay = imputedAssay, slot = "data")
   } else {
     stop(paste0("Assay '", imputedAssay, "' not found in the Seurat object."))
   }
