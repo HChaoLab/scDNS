@@ -674,3 +674,7 @@ copyRowColname <- function(pasteM,copyM){
   colnames(pasteM) = colnames(copyM)
   pasteM
 }
+
+getAccByScore <- function(x){
+  rank(x,ties.method = 'random')/length(x)
+}

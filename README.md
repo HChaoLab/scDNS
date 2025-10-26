@@ -235,7 +235,9 @@ DimPlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',group.by = 'Type',pt.size = 0.2
   scale_color_manual(values = sample_color_GEM)+
   theme_pretty()+shortAxixSeurat()+UMAP_XYLabel()+labs(title = '')
 PANC1GEM24H_SOB_3$TIMM44_scZs <- abs(GEM_PANC1_scDNSob@scZscore['TIMM44',])
-FeaturePlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',features = 'TIMM44_scZs',label = T)+scale_color_gradientn(name = 'scZs(TIMM44)',colours = Expression_color2())+
+Expression_color2 = c('grey85','#FFF7EC','#FEE8C8','#FDD49E','#FDBB84','#FC8D59','#EF6548','#D7301F','#B30000','#7F0000')
+FeaturePlot(PANC1GEM24H_SOB_3,reduction = 'umap_RNA',features = 'TIMM44_scZs',label = T)+
+  scale_color_gradientn(name = 'scZs(TIMM44)',colours = Expression_color2)+
   theme_pretty(12)
 ```
 !['xxx'](vignettes/p_GEM_Type_dimplot.png)!['xxx'](vignettes/p_scZs_TIMM44_geme_featuplot.png)
