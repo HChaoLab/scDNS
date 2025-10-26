@@ -15,5 +15,5 @@ theme_pretty_NoBox(fontsize = 10, font = "Helvetica")
 
 }
 \description{
-theme_pretty
+theme_pretty with no box
 }
