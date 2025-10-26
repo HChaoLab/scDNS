@@ -1,4 +1,4 @@
-# scDNS define class
+# scDNS  class
 scDNSobjClass <- function(){
   setClassUnion("matrixORdgCMatrix", c("matrix", "dgCMatrix"))
   setClassUnion("matrixORarray", c("matrix", "array"))
@@ -20,16 +20,8 @@ scDNSobjClass <- function(){
     Other = 'list'
   ))
 }
-
 scDNSobjClass()
-# # 创建类的方法
-setMethod("show", "scDNS",
-          function(object) {
-            cat("Gene expression matrix size (gene × cell):", dim(object@data), "\n")
-            cat("The number of edges in the network:", nrow(object@Network), "\n")
-            cat("Group information:", object@uniCase, "\n")
-          }
-)
+
 
 seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...) {
   # Check if GroupBy argument is provided
@@ -61,6 +53,7 @@ seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...
     data = data_mat,
     Network = scDNSBioNet,
     GroupLabel = group_label,
+    uniCase = unique(group_label),
     ...
   )
 
@@ -68,6 +61,14 @@ seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...
 }
 
 
+
+setMethod("show", "scDNS",
+          function(object) {
+            cat("Gene expression matrix size (gene × cell):", dim(object@data), "\n")
+            cat("The number of edges in the network:", nrow(object@Network), "\n")
+            cat("Group information:", object@uniCase, "\n")
+          }
+)
 
 setMethod("colnames", signature(x = "scDNS"), function(x) {
   if (!is.null(x@data)) {
