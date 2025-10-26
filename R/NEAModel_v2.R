@@ -7,12 +7,13 @@
 #' @param n.randNet Integer, number of cells sampled for model building (def:20000)
 #' @param sdBias Numeric value, bias coefficient used to penalize low degree genes(>=1) (def:1.1)
 #' @param GroupLabel
+#' @param repTime
 #'
 #' @return
 #' @export
 #'
 #' @examples
-scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet = NULL,
+scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet = NULL,repTime=5,
                                       sdBias = NULL,GroupLabel=NULL)
 {
   if (!is.null(n.dropGene)) {
@@ -65,9 +66,10 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet 
   CandidateNet_samll$npoint_ds <-  CandidateNet_samll$npoint_log
   CandidateNet_samll$LR = pmin(Likelihood[CandidateNet_samll[,1]],
                                Likelihood[CandidateNet_samll[,2]])
-
+  message("rand netowrk")
   # # rand netowrk
   NEAModel_randNet <- creatNEAModel_test(ExpData = ExpData, CandidateNet_samll=CandidateNet_samll,
+                                         repTime = repTime,
                                          k = scDNSobject@Div.Parameters$k,
                                          GroupLabel = GroupLabel,
                                          n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
@@ -81,7 +83,9 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet 
                                          sdBias = scDNSobject@NEA.Parameters$sdBias, rb.jsd = scDNSobject@Div.Parameters$rb.jsd,
                                          parllelModel = scDNSobject@Div.Parameters$parllelModel)
   # shuffleLabel
+  message("shuffleLabel")
   NEAModel_shuffleLabel <- creatNEAModel_test( ExpData = ExpData, CandidateNet_samll=CandidateNet_samll,
+                                               repTime = repTime,
                                                k = scDNSobject@Div.Parameters$k,
                                                GroupLabel = sample(GroupLabel), ###########################❤
                                                n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
@@ -96,6 +100,7 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet 
                                                parllelModel = scDNSobject@Div.Parameters$parllelModel)
 
   # shuffle distribution
+  message("shuffle distribution")
   shuffleData <- shuffle_rows_by_group(counts,data = ExpData,GroupLabel = GroupLabel)
 
   dropoutMatrix = Matrix::tcrossprod(shuffleData$counts != 0)
@@ -107,7 +112,7 @@ scDNS_2_creatNEAModel_v2 <- function (scDNSobject, n.dropGene = NULL, n.randNet 
 
   NEAModel_RandDistrubution <- creatNEAModel_test( ExpData = shuffleData$data,
                                                    CandidateNet_samll=CandidateNet_samll,
-
+                                                   repTime = repTime,
                                                    k = scDNSobject@Div.Parameters$k,
                                                    GroupLabel = GroupLabel,
                                                    n.grid = scDNSobject@Div.Parameters$n.grid, n.coarse = scDNSobject@Div.Parameters$n.coarse,
@@ -154,7 +159,7 @@ creatNEAModel_test <- function (ExpData = NULL, CandidateNet_samll=NULL,
                                 GroupLabel = NULL,
                                 n.grid = 60, n.coarse = 20, CoarseGrain = TRUE, loop.size = 3000,
                                 parallel.sz = 10, noiseSd = 0.01, verbose = TRUE, exclude.zero = FALSE,
-                                NoiseRemove = TRUE, divergence = "jsd", ds.method = "knn",
+                                NoiseRemove = TRUE, divergence = "jsd", ds.method = "knn",repTime=5,
                                 h = 3, sdBias = 1.1, rb.jsd = FALSE, parllelModel = c("foreach",
                                                                                       "bplapply")[1])
 {
@@ -165,7 +170,7 @@ creatNEAModel_test <- function (ExpData = NULL, CandidateNet_samll=NULL,
                                               CoarseGrain = CoarseGrain, returnCDS = FALSE, Div_weight = Div_weight,
                                               divergence = divergence, ds.method = ds.method, h = h,
                                               parllelModel = parllelModel, rb.jsd = rb.jsd)
-  NEAModel <- creatNEAModel_robustness(Network=RawKLD_R_samll$Network,repTime=5,sdBias = sdBias)
+  NEAModel <- creatNEAModel_robustness(Network=RawKLD_R_samll$Network,repTime=repTime,sdBias = sdBias)
   NEAModel
 }
 
@@ -603,7 +608,7 @@ getZscore_v2 <- function (EdgeScore, NEAModel, GeneLikelihood,EdgeDataSpecific=N
 #' @export
 #'
 #' @examples
-scDNS_3_GeneZscore_v2 <- function(scDNSobject,reCreatNEA=FALSE,PositiveGene=NULL,repTime=1,testTime=5,FDRmethods='BY',corr_adjust = T)
+scDNS_3_GeneZscore_v2 <- function(scDNSobject,reCreatNEA=FALSE,PositiveGene=NULL,repTime=1,testTime=5,FDRmethods='BH',corr_adjust = T)
 {
   NEAModel <- scDNSobject@NEAModel
   if(reCreatNEA&!is.null(PositiveGene)){
@@ -658,7 +663,7 @@ scDNS_3_GeneZscore_v2 <- function(scDNSobject,reCreatNEA=FALSE,PositiveGene=NULL
 
     #
     Network_rand <- NEAModel$randNet$DegreeData
-    NEAModel_randNet <- creatNEAModel_robustness(Network=Network_rand,repTime=5)
+    NEAModel_randNet <- creatNEAModel_robustness(Network=Network_rand,repTime=repTime)
 
     NEAModel_temp <- list(randNet=NEAModel_randNet,shuffleLabel=NEAModel_shuffleLabel,RandDistrubution=NEAModel_RandDistrubution)
 

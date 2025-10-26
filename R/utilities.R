@@ -669,3 +669,8 @@ theme_pretty_NoBox <- function (fontsize = 10, font = "Helvetica") {
   return(nl)
 }
 
+copyRowColname <- function(pasteM,copyM){
+  rownames(pasteM) = rownames(copyM)
+  colnames(pasteM) = colnames(copyM)
+  pasteM
+}

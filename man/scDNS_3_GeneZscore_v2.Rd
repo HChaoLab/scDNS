@@ -10,7 +10,7 @@ scDNS_3_GeneZscore_v2(
   PositiveGene = NULL,
   repTime = 1,
   testTime = 5,
-  FDRmethods = "BY",
+  FDRmethods = "BH",
   corr_adjust = T
 )
 }

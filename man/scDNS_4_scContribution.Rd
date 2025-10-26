@@ -6,7 +6,7 @@
 \usage{
 scDNS_4_scContribution(
   scDNSobject,
-  topGene = 100,
+  topGene = NULL,
   Zscore_col = "combined_z",
   sigGene = NULL,
   q.th = 0.01,

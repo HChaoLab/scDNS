@@ -302,21 +302,24 @@ scDNS_3_GeneZscore <- function(scDNSobject){
 #'
 #' @examples
 scDNS_4_scContribution <- function(scDNSobject,
-                                   topGene=100,
+                                   topGene=NULL,
                                    Zscore_col = 'combined_z',
                                    sigGene=NULL,
                                    q.th=0.01,...){
-
-  if(is.null(sigGene)){
-    Zscore <- scDNSobject@Zscore
-    p_adj <- p.adjust(Zscore[,Zscore_col],method = 'BH')
-    sigGene <- Zscore$Gene[p_adj<q.th]
-    if(length(sigGene)==0){
-      message('The number of sigGene is 0. We used top genes (100)')
-    }else{
-      message('The number of sigGene is ',length(sigGene),'.')
+  if(is.null(topGene)){
+    if(is.null(sigGene)){
+      Zscore <- scDNSobject@Zscore
+      p_adj <- p.adjust(Zscore[,Zscore_col],method = 'BH')
+      sigGene <- Zscore$Gene[p_adj<q.th]
+      if(length(sigGene)==0){
+        message('The number of sigGene is 0. We used top genes (100)')
+      }else{
+        message('The number of sigGene is ',length(sigGene),'.')
+      }
     }
   }
+
+
 
   nx <-  sqrt(ncol(scDNSobject@JDensity_A))
   # scCon_res <- scContribution(EdgeScore = scDNSobject@Network,
