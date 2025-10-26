@@ -158,7 +158,7 @@ creatNEAModel_test <- function (ExpData = NULL, CandidateNet_samll=NULL,
                                 h = 3, sdBias = 1.1, rb.jsd = FALSE, parllelModel = c("foreach",
                                                                                       "bplapply")[1])
 {
-  RawKLD_R_samll = scDNS2::getKLD_cKLDnetwork(ExpData = ExpData, Network = CandidateNet_samll,
+  RawKLD_R_samll = getKLD_cKLDnetwork(ExpData = ExpData, Network = CandidateNet_samll,
                                               k = k, GroupLabel = GroupLabel, n.grid = n.grid, n.coarse = n.coarse,
                                               loop.size = nrow(CandidateNet_samll)/parallel.sz, parallel.sz = parallel.sz,
                                               verbose = verbose, exclude.zero = exclude.zero, NoiseRemove = NoiseRemove,
@@ -186,8 +186,8 @@ creatNEAModel_robustness<- function(Network,repTime=5,sdBias=1.1){
   RawDistrbution.cDiv <- NULL
   for (i in unique(CadiateNet2$npoint_ds) %>% sort()) {
     idx = CadiateNet2$npoint_ds == i
-    RawDistrbution.Div <- c(RawDistrbution.Div, list(scDNS2::fit_selm_distrubution(CadiateNet2$Div[idx])))
-    RawDistrbution.cDiv <- c(RawDistrbution.cDiv, list(scDNS2::fit_selm_distrubution(c(CadiateNet2$cDiv_D1[idx],
+    RawDistrbution.Div <- c(RawDistrbution.Div, list(fit_selm_distrubution(CadiateNet2$Div[idx])))
+    RawDistrbution.cDiv <- c(RawDistrbution.cDiv, list(fit_selm_distrubution(c(CadiateNet2$cDiv_D1[idx],
                                                                                        CadiateNet2$cDiv_D2[idx]))))
   }
   names(RawDistrbution.Div) <- unique(CadiateNet2$npoint_ds) %>%
@@ -427,12 +427,12 @@ toChiSquareX <- function(rs, bias, DistrbutionList) {
   uniBias <- unique(bias)
   Num_Model <- names(DistrbutionList)
   for (i in 1:length(uniBias)) {
-    ind = scDNS2::getCloseseData(data = as.numeric(Num_Model),
+    ind <- getCloseseData(data = as.numeric(Num_Model),
                                  uniBias[i], returnIndex = T)
-    Pvalues[bias == uniBias[i]] = DistrbutionList[[ind]]$cal_Pvalue(rs[bias ==
+    Pvalues[bias == uniBias[i]]  <-  DistrbutionList[[ind]]$cal_Pvalue(rs[bias ==
                                                                          uniBias[i]], ParmetersInput = DistrbutionList[[ind]]$ParmetersInput)$Pvalues
   }
-  Pvalues[Pvalues == 0] = 9.99999999998465e-313
+  Pvalues[Pvalues == 0] <-  9.99999999998465e-313
   chiSquare = sqrt(-log10(Pvalues))
   data.frame(Pvalues = Pvalues, chiSquare = chiSquare)
 }

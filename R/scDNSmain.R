@@ -291,7 +291,8 @@ scDNS_3_GeneZscore <- function(scDNSobject){
 #' scDNS_4_scContribution
 #'
 #' @param scDNSobject scDNSobject
-#' @param topGene Integer value, representing the number of top significant genes(def:100).When sigGene is not NULL, topGene is invalid.
+#' @param topGene Integer value, representing the number of top significant genes(def:100).
+#' When sigGene is not NULL, topGene is invalid.
 #' @param sigGene A vector of strings representing the set of genes of interest (def:NULL)
 #' @param q.th Adjusted p-value threshold
 #'
@@ -302,13 +303,14 @@ scDNS_3_GeneZscore <- function(scDNSobject){
 #' @examples
 scDNS_4_scContribution <- function(scDNSobject,
                                    topGene=100,
+                                   Zscore_col = 'combined_z',
                                    sigGene=NULL,
                                    q.th=0.01,...){
 
   if(is.null(sigGene)){
     Zscore <- scDNSobject@Zscore
-    Zscore$Qvalue.Zsplus <- p.adjust(Zscore$Pvalues.ZsPlus,method = 'BH')
-    sigGene <- Zscore$Gene[Zscore$Qvalue.Zsplus<q.th]
+    p_adj <- p.adjust(Zscore[,Zscore_col],method = 'BH')
+    sigGene <- Zscore$Gene[p_adj<q.th]
     if(length(sigGene)==0){
       message('The number of sigGene is 0. We used top genes (100)')
     }else{
