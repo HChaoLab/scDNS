@@ -577,6 +577,32 @@ getZscore_v2 <- function (EdgeScore, NEAModel, GeneLikelihood,EdgeDataSpecific=N
   }
 }
 
+#' Compute gene-level Z-scores v2
+#'
+#' This function calculates gene-level Z-scores from a scDNS object using
+#' three types of null network models: random edge rewiring, label shuffling,
+#' and random distribution.
+#'
+#' @param scDNSobject A scDNS object containing the gene interaction network
+#' @param reCreatNEA Whether to re-generate NEA models with stochastic
+#' @param PositiveGene Optional character vector specifying a set of positive
+#' @param repTime Number of repetitions used when creating each NEA
+#' @param testTime Integer. Number of independent stochastic tests performed to
+#' identify the most robust seed with the best recovery accuracy of
+#' PositiveGene.
+#' @param FDRmethods Character. Multiple testing correction method for p-values,
+#' such as "BH", "BY", or "bonferroni".
+#' @param corr_adjust Whether to apply correlation adjustment when
+#' combining multiple Z-scores using the Stouffer method.
+#'
+#' @return A scDNS object with the following updated slots:
+#' - NEAModel$ZscoreList: List of Z-score results for all NEA models
+#' - Zscore: Data frame containing combined Z-scores, p-values, adjusted p-values, and accuracy metrics
+#' - Network: Updated network information used for computation
+#'
+#' @export
+#'
+#' @examples
 scDNS_3_GeneZscore_v2 <- function(scDNSobject,reCreatNEA=FALSE,PositiveGene=NULL,repTime=1,testTime=5,FDRmethods='BY',corr_adjust = T)
 {
   NEAModel <- scDNSobject@NEAModel
