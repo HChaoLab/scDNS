@@ -44,6 +44,7 @@ devtools::install_github("xiaolab-xjtu/scDNS")
 
 This example demonstrates a typical analysis workflow using **scDNS** on scRNA-seq data.
 
+Example data can be download from [here](https://drive.google.com/file/d/1RZQxfZLGGnEC0cX4R6aaw6JRklfzoEoI/view?usp=sharing).
 
 ### 1. Load and preprocess data
 
