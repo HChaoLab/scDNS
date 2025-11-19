@@ -1,6 +1,7 @@
 #' CreatScDNSobject
 #'
 #' creat scDNS object
+#'
 #' @param counts a matrix represents gene count expression, with rows being genes and columns being cells
 #' @param data a matrix represents gene normalized expression, with rows being genes and columns being cells.
 #' @param Network a two-column data frame represents the biological network
@@ -24,6 +25,8 @@
 #' @param parllelModel parllelModel=c('foreach','bplapply')[1]
 #' @param rb.jsd
 #' @param Div_weight
+#' @param uniCase unique cases of groups
+#' @param noiseSd
 #'
 #' @return
 #' @export
@@ -33,6 +36,7 @@ CreatScDNSobject <- function(counts,
                              data = NULL,
                              Network = NULL,
                              GroupLabel = NULL,
+                             uniCase = unique(GroupLabel),
                              k= 10,
                              n.grid = 60,
                              NoiseRemove = TRUE,
@@ -111,7 +115,7 @@ CreatScDNSobject <- function(counts,
                      NEAModel=list(),
                      JDensity_A = matrix(),
                      JDensity_B = matrix(),
-                     uniCase = character(),
+                     uniCase = uniCase,
                      Other=list())
   scDNSobject
 
