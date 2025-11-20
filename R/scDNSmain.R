@@ -307,13 +307,13 @@ scDNS_3_GeneZscore <- function(scDNSobject){
 #' @examples
 scDNS_4_scContribution <- function(scDNSobject,
                                    topGene=NULL,
-                                   Zscore_col = 'combined_z',
+                                   Pval_col = 'p_comb',
                                    sigGene=NULL,
                                    q.th=0.01,...){
   if(is.null(topGene)){
     if(is.null(sigGene)){
       Zscore <- scDNSobject@Zscore
-      p_adj <- p.adjust(Zscore[,Zscore_col],method = 'BH')
+      p_adj <- p.adjust(Zscore[,Pval_col],method = 'BH')
       sigGene <- Zscore$Gene[p_adj<q.th]
       if(length(sigGene)==0){
         message('The number of sigGene is 0. We used top genes (100)')
