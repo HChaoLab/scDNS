@@ -255,6 +255,7 @@ If you use **scDNS** in your research, please cite:
 
 ## 📘 License
 
-This package is released under the MIT License.
+Permission is granted for academic and research use only.
+Commercial use is strictly prohibited without prior written permission.
 
 ---
