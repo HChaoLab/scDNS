@@ -71,7 +71,7 @@ sob <- PANC1GEM24H_SOB_3
 rm(PANC1GEM24H_SOB_3)
 gc()
 ```
-**Impute gene expression using MAGIC if not already available**
+**Impute gene expression using MAGIC**
 
 ``` r
 group_col <- "Type"       # experimental condition
