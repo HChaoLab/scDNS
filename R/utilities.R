@@ -27,7 +27,21 @@ rmNotExpressedGene<-function(sob,min.cellN=10){
     return(object)
   }
   # Output a logical vector for every gene on whether the more than zero counts per cell
-  counts <- GetAssayData(object = sob, slot = "counts")
+  s_version <- packageVersion("Seurat")$major
+  
+  if (s_version >= 5) {
+    # Seurat v5 
+    message("Detected Seurat v5, using 'layer' parameter.")
+	
+	counts <- GetAssayData(object = sob, layer = "counts")
+  } else {
+    # Seurat v4 
+    message("Detected Seurat v4, using 'slot' parameter.")
+    
+	counts <- GetAssayData(object = sob, slot = "counts")
+  }
+  
+  
   nonzero <- counts > 0
 
   # Sums all TRUE values and returns TRUE if more than 10 TRUE values per gene

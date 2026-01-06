@@ -32,11 +32,31 @@ seurat2scDNSObj <- function(sob, imputedAssay = "MAGIC_RNA", GroupBy = NULL, ...
   # Detect Seurat major version (4 or 5)
 
   # Extract raw counts matrix
-  counts_mat <- Seurat::GetAssayData(sob, assay = "RNA", slot = "counts")
+  s_version <- packageVersion("Seurat")$major
+  
+  if (s_version >= 5) {
+    # Seurat v5 
+    message("Detected Seurat v5, using 'layer' parameter.")
+	counts_mat <- Seurat::GetAssayData(sob, assay = "RNA", layer = "counts")
+  } else {
+    # Seurat v4 
+    message("Detected Seurat v4, using 'slot' parameter.")
+    counts_mat <- Seurat::GetAssayData(sob, assay = "RNA", slot = "counts")
+  }
+  
 
   # Extract imputed expression matrix
   if (imputedAssay %in% names(sob@assays)) {
+    if (s_version >= 5) {
+    # Seurat v5 
+    message("Detected Seurat v5, using 'layer' parameter.")
+	data_mat <- Seurat::GetAssayData(sob, assay = imputedAssay, layer = "data")
+  } else {
+    # Seurat v4 
+    message("Detected Seurat v4, using 'slot' parameter.")
     data_mat <- Seurat::GetAssayData(sob, assay = imputedAssay, slot = "data")
+  }
+    
   } else {
     stop(paste0("Assay '", imputedAssay, "' not found in the Seurat object."))
   }
