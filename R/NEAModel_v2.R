@@ -555,8 +555,8 @@ getZscore_v2 <- function (EdgeScore, NEAModel, GeneLikelihood,EdgeDataSpecific=N
                   addLabel2Colnames(RawS.Div[, 2, drop = F], label = ".Div"),
                   addLabel2Colnames(RawS.cDiv[, 2, drop = F], label = ".cDiv"))
   Zscores$degree.LR <- GeneDegree[Zscores$Gene]
-  ZS.Div <- NEAModel$ZscoreFit.Div$cal_Zscore_Pvalue(RawScore = Zscores$RawScore.Div[1],
-                                                    Dsize = Zscores$degree.LR[1], ParmetersInput = NEAModel$ZscoreFit.Div$ParmetersInput)
+  ZS.Div <- NEAModel$ZscoreFit.Div$cal_Zscore_Pvalue(RawScore = Zscores$RawScore.Div,
+                                                    Dsize = Zscores$degree.LR, ParmetersInput = NEAModel$ZscoreFit.Div$ParmetersInput)
   ZS.cDiv <- NEAModel$ZscoreFit.cDiv$cal_Zscore_Pvalue(Zscores$RawScore.cDiv,
                                                       Dsize = Zscores$degree.LR, ParmetersInput = NEAModel$ZscoreFit.cDiv$ParmetersInput)
   ZS.ZsPlus <- NEAModel$ZscoreFit.ZsPlus$cal_Pvalue(ZS.Div[,
