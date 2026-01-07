@@ -95,18 +95,27 @@ CalGeneInfAmount <- function(ExpMat,
     ExpMat[ExpMat>1] = 1
     ExpMat[is.na(ExpMat)] = 0
   }
-
-  # calculte sd
-  sdx = matrixStats::rowSds(as.matrix(ExpMat))
-  LikelihoodModel <- likelihoodFromMixEM_2d(log10(sdx),plot = plot)
-  Likelihoodx <- LikelihoodModel$Cal_likelihood(log10(sdx),
-                                                fitModel = LikelihoodModel$fitModel,
-                                                likelihoodToLower = F)
+  biased_sigmoid <- function(x, threshold = 0.5, strength = 10) {
+    # stopifnot(all(x >= 0 & x <= 1))
+    1 / (1 + exp(-strength * (x - threshold)))
+  }
+  ExpPt <- MatrixGenerics::rowSums2(ExpMat!=0)/ncol(ExpMat)
+  if(sum(ExpPt<0.05)/length(ExpPt)<0.1){ # evaluate Exp data
+    Likelihoodx <- biased_sigmoid(ExpPt,0.05,strength = 50)
+  }else{
+    # calculte sd
+    sdx = matrixStats::rowSds(as.matrix(ExpMat))
+    LikelihoodModel <- likelihoodFromMixEM_2d(log10(sdx),plot = plot)
+    Likelihoodx <- LikelihoodModel$Cal_likelihood(log10(sdx),
+                                                  fitModel = LikelihoodModel$fitModel,
+                                                  likelihoodToLower = F)
+  }
+    
+  
   names(Likelihoodx) <- rownames(ExpMat)
   Likelihoodx
-
+  
 }
-
 
 
 
